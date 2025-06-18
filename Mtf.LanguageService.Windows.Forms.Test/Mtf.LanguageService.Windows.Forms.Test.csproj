@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mtf.Windows.Forms.LanguageService" Version="3.1.16" />
+    <PackageReference Include="Mtf.Windows.Forms.LanguageService" Version="3.1.17" />
     <PackageReference Include="System.Private.Uri" Version="4.3.2" />
   </ItemGroup>
 
