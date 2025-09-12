@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mtf.LanguageService.MAUI", "Mtf.LanguageService.MAUI\Mtf.LanguageService.MAUI.csproj", "{63C23469-FA37-416B-B12D-2701C1C5FE38}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,10 @@ Global
 		{B9CF8AA7-152F-4D76-ADE9-E674CFA011CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9CF8AA7-152F-4D76-ADE9-E674CFA011CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9CF8AA7-152F-4D76-ADE9-E674CFA011CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63C23469-FA37-416B-B12D-2701C1C5FE38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63C23469-FA37-416B-B12D-2701C1C5FE38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63C23469-FA37-416B-B12D-2701C1C5FE38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63C23469-FA37-416B-B12D-2701C1C5FE38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

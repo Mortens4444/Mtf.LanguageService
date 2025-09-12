@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mtf.WPF.LanguageService" Version="2.0.61" />
+    <PackageReference Include="Mtf.WPF.LanguageService" Version="2.0.62" />
     <PackageReference Include="System.Private.Uri" Version="4.3.2" />
   </ItemGroup>
 
