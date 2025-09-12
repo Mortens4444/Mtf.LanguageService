@@ -1,0 +1,8 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="CopyLanguagesFile" AfterTargets="Build">
+    <ItemGroup>
+      <Languages Include="$(MSBuildThisFileDirectory)Languages.ods" />
+    </ItemGroup>
+    <Copy SourceFiles="@(Languages)" DestinationFolder="$(OutDir)" />
+  </Target>
+</Project>
