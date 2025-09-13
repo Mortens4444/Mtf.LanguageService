@@ -50,41 +50,14 @@
     <None Include="..\Mtf.LanguageService\Languages.ods" Pack="true" PackagePath="buildTransitive\" CopyToOutputDirectory="Always" />
     <None Include="Mtf.MAUI.LanguageService.targets" Pack="true" PackagePath="buildTransitive\" />
 
-    <Content Include="bin\Release\net9.0-android\Mtf.LanguageService.dll"
-           Pack="true"
-           PackagePath="lib\net9.0-android"
-           Condition="Exists('bin\Release\net9.0-android\Mtf.LanguageService.dll')" />
-    <Content Include="bin\Release\net9.0-ios\Mtf.LanguageService.dll"
-             Pack="true"
-             PackagePath="lib\net9.0-ios"
-             Condition="Exists('bin\Release\net9.0-ios\Mtf.LanguageService.dll')" />
-    <Content Include="bin\Release\net9.0-maccatalyst\Mtf.LanguageService.dll"
-             Pack="true"
-             PackagePath="lib\net9.0-maccatalyst"
-             Condition="Exists('bin\Release\net9.0-maccatalyst\Mtf.LanguageService.dll')" />
-    <Content Include="bin\Release\net9.0-windows10.0.19041.0\Mtf.LanguageService.dll"
-             Pack="true"
-             PackagePath="lib\net9.0-windows10.0.19041.0"
-             Condition="Exists('bin\Release\net9.0-windows10.0.19041.0\Mtf.LanguageService.dll')" />
-    
-    <Content Include="bin\Release\net9.0-android\Mtf.LanguageService.pdb"
-           Pack="true"
-           PackagePath="lib\net9.0-android"
-           Condition="Exists('bin\Release\net9.0-android\Mtf.LanguageService.pdb')" />
-    <Content Include="bin\Release\net9.0-ios\Mtf.LanguageService.pdb"
-             Pack="true"
-             PackagePath="lib\net9.0-ios"
-             Condition="Exists('bin\Release\net9.0-ios\Mtf.LanguageService.pdb')" />
-    <Content Include="bin\Release\net9.0-maccatalyst\Mtf.LanguageService.pdb"
-             Pack="true"
-             PackagePath="lib\net9.0-maccatalyst"
-             Condition="Exists('bin\Release\net9.0-maccatalyst\Mtf.LanguageService.pdb')" />
-    <Content Include="bin\Release\net9.0-windows10.0.19041.0\Mtf.LanguageService.pdb"
-             Pack="true"
-             PackagePath="lib\net9.0-windows10.0.19041.0"
-             Condition="Exists('bin\Release\net9.0-windows10.0.19041.0\Mtf.LanguageService.pdb')" />
-    <!--<Content Include="bin\Release\net9.0-windows10.0.19041.0\Mtf.LanguageService.dll" Pack="true" PackagePath="lib\net9.0-windows7.0" />
-    <Content Include="bin\Release\net9.0-windows10.0.19041.0\Mtf.LanguageService.pdb" Pack="true" PackagePath="lib\net9.0-windows7.0" />-->
+    <Content Include="bin\Release\net9.0-android\Mtf.LanguageService.dll" Pack="true" PackagePath="lib\net9.0-android" />
+    <Content Include="bin\Release\net9.0-android\Mtf.LanguageService.pdb" Pack="true" PackagePath="lib\net9.0-android" />
+    <Content Include="bin\Release\net9.0-ios\Mtf.LanguageService.dll" Pack="true" PackagePath="lib\net9.0-ios" />
+    <Content Include="bin\Release\net9.0-ios\Mtf.LanguageService.pdb" Pack="true" PackagePath="lib\net9.0-ios" />
+    <Content Include="bin\Release\net9.0-maccatalyst\Mtf.LanguageService.dll" Pack="true" PackagePath="lib\net9.0-maccatalyst" />
+    <Content Include="bin\Release\net9.0-maccatalyst\Mtf.LanguageService.pdb" Pack="true" PackagePath="lib\net9.0-maccatalyst" />
+    <Content Include="bin\Release\net9.0-windows10.0.19041.0\Mtf.LanguageService.dll" Pack="true" PackagePath="lib\net9.0-windows7.0" />
+    <Content Include="bin\Release\net9.0-windows10.0.19041.0\Mtf.LanguageService.pdb" Pack="true" PackagePath="lib\net9.0-windows7.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -100,7 +73,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <Version>1.0.10</Version>
+    <Version>1.0.11</Version>
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <FileVersion>$(Version)</FileVersion>
     <InformationalVersion>$(Version)</InformationalVersion>
