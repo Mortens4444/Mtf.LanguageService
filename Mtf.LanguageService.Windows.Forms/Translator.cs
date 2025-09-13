@@ -139,7 +139,7 @@ namespace Mtf.LanguageService.Windows.Forms
                 {
                     result.AddRange(Translate(contextMenuStrip.Items, toolTip));
                 }
-#if NET481
+#if NET481_OR_GREATER
                 else if (control is ContextMenu contextMenu)
                 {
                     result.AddRange(Translate(contextMenu.MenuItems, toolTip));
@@ -175,7 +175,7 @@ namespace Mtf.LanguageService.Windows.Forms
                 {
                     treeNode.Text = originalText.Value;
                 }
-#if NET481
+#if NET481_OR_GREATER
                 else if (originalText.Key is MenuItem menuItem)
                 {
                     menuItem.Text = originalText.Value;
@@ -233,7 +233,7 @@ namespace Mtf.LanguageService.Windows.Forms
             return originalTexts;
         }
 
-#if NET481
+#if NET481_OR_GREATER
         public static List<KeyValuePair<object, string>> Translate(Menu.MenuItemCollection items, ToolTip toolTip)
         {
             var originalTexts = new List<KeyValuePair<object, string>>();
