@@ -50,8 +50,8 @@
     <None Include="..\Mtf.LanguageService\Languages.ods" Pack="true" PackagePath="buildTransitive\" CopyToOutputDirectory="Always" />
     <None Include="Mtf.MAUI.LanguageService.targets" Pack="true" PackagePath="buildTransitive\" />
 
-    <Content Include="..\Mtf.LanguageService\bin\Release\netstandard2.1\Mtf.LanguageService.dll" Pack="true" PackagePath="lib\netstandard2.1" />
-    <Content Include="..\Mtf.LanguageService\bin\Release\netstandard2.1\Mtf.LanguageService.pdb" Pack="true" PackagePath="lib\netstandard2.1" />
+    <!--<Content Include="..\Mtf.LanguageService\bin\Release\netstandard2.1\Mtf.LanguageService.dll" Pack="true" PackagePath="lib\netstandard2.1" />
+    <Content Include="..\Mtf.LanguageService\bin\Release\netstandard2.1\Mtf.LanguageService.pdb" Pack="true" PackagePath="lib\netstandard2.1" />-->
     
     <!--<Content Include="bin\Release\net9.0-android\Mtf.LanguageService.dll" Pack="true" PackagePath="lib\net9.0-android" />
     <Content Include="bin\Release\net9.0-android\Mtf.LanguageService.pdb" Pack="true" PackagePath="lib\net9.0-android" />
@@ -76,7 +76,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <Version>1.0.13</Version>
+    <Version>1.0.14</Version>
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <FileVersion>$(Version)</FileVersion>
     <InformationalVersion>$(Version)</InformationalVersion>
