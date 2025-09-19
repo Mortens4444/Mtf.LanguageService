@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mtf.LanguageService.MAUI", "Mtf.LanguageService.MAUI\Mtf.LanguageService.MAUI.csproj", "{63C23469-FA37-416B-B12D-2701C1C5FE38}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mtf.LanguageService.MAUI.Test", "Mtf.LanguageService.MAUI.Test\Mtf.LanguageService.MAUI.Test.csproj", "{03A08884-4E66-4254-A7BF-AF6707544344}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,11 @@ Global
 		{63C23469-FA37-416B-B12D-2701C1C5FE38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63C23469-FA37-416B-B12D-2701C1C5FE38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63C23469-FA37-416B-B12D-2701C1C5FE38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03A08884-4E66-4254-A7BF-AF6707544344}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03A08884-4E66-4254-A7BF-AF6707544344}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03A08884-4E66-4254-A7BF-AF6707544344}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03A08884-4E66-4254-A7BF-AF6707544344}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03A08884-4E66-4254-A7BF-AF6707544344}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

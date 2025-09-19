@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections;
+using System.Reflection;
 
 namespace Mtf.LanguageService.MAUI
 {
@@ -7,27 +8,7 @@ namespace Mtf.LanguageService.MAUI
         public static void Translate(Page page)
         {
             ArgumentNullException.ThrowIfNull(page);
-
-            if (!string.IsNullOrEmpty(page.Title))
-            {
-                page.Title = Lng.Elem(page.Title);
-            }
-
-            if (page is ContentPage cp)
-            {
-                TranslateElement(cp.Content);
-            }
-
-            if (page is Shell shell)
-            {
-                foreach (var item in shell.Items)
-                {
-                    if (!String.IsNullOrEmpty(item.Title))
-                    {
-                        item.Title = Lng.Elem(item.Title);
-                    }
-                }
-            }
+            TranslateElement(page);
         }
 
         private static void TranslateElement(object element)
@@ -37,47 +18,34 @@ namespace Mtf.LanguageService.MAUI
                 return;
             }
 
-            switch (element)
+            var commonProperties = new[] { "Text", "Title", "Header", "Placeholder", "Label", "Content" };
+            foreach (var commonProperty in commonProperties)
             {
-                case Layout layout:
-                    foreach (var child in layout.Children)
-                        TranslateElement(child);
-                    break;
-
-                case ContentView contentView:
-                    TranslateElement(contentView.Content);
-                    break;
-
-                case ScrollView scrollView:
-                    TranslateElement(scrollView.Content);
-                    break;
-
-                case ContentPresenter presenter:
-                    TranslateElement(presenter.Content);
-                    break;
+                TryTranslateProperty(element, commonProperty);
             }
 
-            TryTranslateProperty(element, "Text");
-            TryTranslateProperty(element, "Content");
-            TryTranslateProperty(element, "Title");
-            TryTranslateProperty(element, "Header");
-            TryTranslateProperty(element, "Placeholder");
-            TryTranslateProperty(element, "Label");
-
-            if (element is MenuItem menuItem && !String.IsNullOrEmpty(menuItem.Text))
+            if (element is IContentView container)
             {
-                menuItem.Text = Lng.Elem(menuItem.Text);
+                TranslateElement(container.Content);
             }
-
-            if (element is ToolbarItem toolbarItem && !string.IsNullOrEmpty(toolbarItem.Text))
+            else if (element is Layout layout)
             {
-                toolbarItem.Text = Lng.Elem(toolbarItem.Text);
+                foreach (var child in layout.Children)
+                {
+                    TranslateElement(child);
+                }
             }
-
-            if (element is ItemsView itemsView)
+            else if (element is ItemsView itemsView)
             {
                 TryTranslateProperty(itemsView, "Header");
                 TryTranslateProperty(itemsView, "Footer");
+            }
+            else if (element is IEnumerable enumerable)
+            {
+                foreach (var item in enumerable)
+                {
+                    TranslateElement(item);
+                }
             }
         }
 
@@ -90,23 +58,20 @@ namespace Mtf.LanguageService.MAUI
 
             var type = target.GetType();
             var prop = type.GetRuntimeProperty(propertyName);
-            if (prop == null)
+            if (prop == null || prop.PropertyType != typeof(string) || !prop.CanRead || !prop.CanWrite)
             {
                 return;
             }
 
-            if (prop.PropertyType == typeof(string) && prop.CanRead && prop.CanWrite)
+            try
             {
-                try
+                var val = prop.GetValue(target) as string;
+                if (!String.IsNullOrEmpty(val))
                 {
-                    var val = prop.GetValue(target) as string;
-                    if (!String.IsNullOrEmpty(val))
-                    {
-                        prop.SetValue(target, Lng.Elem(val));
-                    }
+                    prop.SetValue(target, Lng.Elem(val));
                 }
-                catch { }
             }
+            catch { }
         }
     }
 }

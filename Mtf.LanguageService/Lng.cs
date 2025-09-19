@@ -24,55 +24,15 @@ namespace Mtf.LanguageService
         {
             SetDefaultLanguage();
 
-            try
+            var languageFiles = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, LanguageFile);
+            if (languageFiles.Length != 0)
             {
-                var asm = typeof(Lng).Assembly;
-                var names = asm.GetManifestResourceNames();
-
-                // próbáljunk olyan resource nevet találni, ami a LanguageFile-re végződik
-                var resourceName = names
-                    .FirstOrDefault(n => n.EndsWith(LanguageFile, StringComparison.OrdinalIgnoreCase)
-                                         || n.IndexOf("Languages.ods", StringComparison.OrdinalIgnoreCase) >= 0);
-
-                if (resourceName != null)
-                {
-                    using (var stream = asm.GetManifestResourceStream(resourceName))
-                    {
-                        if (stream == null)
-                            throw new InvalidOperationException($"Resource {resourceName} found but stream is null.");
-
-                        // Ha a loader tud Stream-ből olvasni:
-                        AllLanguageElements = languageElementLoader.LoadElements(stream);
-                        return;
-                    }
-                }
-
-                // ha nem találtunk embedded resource-ot, visszaesés fájlrendszerre (opcionális)
-                var languageFiles = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, LanguageFile);
-                if (languageFiles.Length != 0)
-                {
-                    AllLanguageElements = languageElementLoader.LoadElements(languageFiles.First());
-                    return;
-                }
-
-                throw new InvalidOperationException($"Cannot find {LanguageFile} file as embedded resource or in directory {AppDomain.CurrentDomain.BaseDirectory}.");
+                AllLanguageElements = languageElementLoader.LoadElements(languageFiles.First());
             }
-            catch (Exception ex)
+            else
             {
-                System.Diagnostics.Debug.WriteLine("Lng static init failed: " + ex);
-                throw;
+                throw new InvalidOperationException($"Cannot find {LanguageFile} file in directory {AppDomain.CurrentDomain.BaseDirectory}. This file can be found in the packages\\Mtf.LanguageService.1.0.x\\lib folder of the solution.");
             }
-            //SetDefaultLanguage();
-
-            //var languageFiles = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, LanguageFile);
-            //if (languageFiles.Length != 0)
-            //{
-            //    AllLanguageElements = languageElementLoader.LoadElements(languageFiles.First());
-            //}
-            //else
-            //{
-            //    throw new InvalidOperationException($"Cannot find {LanguageFile} file in directory {AppDomain.CurrentDomain.BaseDirectory}. This file can be found in the packages\\Mtf.LanguageService.1.0.x\\lib folder of the solution.");
-            //}
         }
 
         private static void SetDefaultLanguage()
