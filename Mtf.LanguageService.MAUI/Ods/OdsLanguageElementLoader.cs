@@ -18,30 +18,38 @@ namespace Mtf.LanguageService.Ods
             var allLanguageElements = new Dictionary<Translation, List<string>>();
             foreach (DataTable table in dataSet.Tables)
             {
+                Console.WriteLine($"{table.TableName}: {table.Rows.Count}");
                 for (int i = 0; i < table.Rows.Count; i++)
                 {
-                    DataRow row = table.Rows[i];
-                    var item = row.ItemArray.First();
-
-                    var language = (Language)Enum.Parse(typeof(Language), table.TableName);
-
-                    var englishText = OdsLanguageElementLoader.GetRowValue(dataSet.Tables["English"].Rows[i]);
-                    var key = new Translation(language, OdsLanguageElementLoader.Normalize(englishText));
-                    var currentRowValue = OdsLanguageElementLoader.Normalize(OdsLanguageElementLoader.GetRowValue(row));
-                    if (!String.IsNullOrEmpty(currentRowValue))
+                    try
                     {
-                        if (allLanguageElements.ContainsKey(key))
+                        DataRow row = table.Rows[i];
+                        var item = row.ItemArray.First();
+
+                        var language = (Language)Enum.Parse(typeof(Language), table.TableName);
+
+                        var englishText = GetRowValue(dataSet.Tables["English"].Rows[i]);
+                        var key = new Translation(language, Normalize(englishText));
+                        var currentRowValue = Normalize(GetRowValue(row));
+                        if (!String.IsNullOrEmpty(currentRowValue))
                         {
-                            if (allLanguageElements[key].Contains(currentRowValue))
+                            if (allLanguageElements.ContainsKey(key))
                             {
-                                throw new Exception($"Element already present in dictionary: {currentRowValue}, Sheet: {table.TableName}, Row: {i + 1}");
+                                if (allLanguageElements[key].Contains(currentRowValue))
+                                {
+                                    throw new Exception($"Element already present in dictionary: {currentRowValue}, Sheet: {table.TableName}, Row: {i + 1}");
+                                }
+                                allLanguageElements[key].Add(currentRowValue);
                             }
-                            allLanguageElements[key].Add(currentRowValue);
+                            else
+                            {
+                                allLanguageElements.Add(key, new List<string> { currentRowValue });
+                            }
                         }
-                        else
-                        {
-                            allLanguageElements.Add(key, new List<string> { currentRowValue });
-                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.Error.WriteLine(ex);
                     }
                 }
             }

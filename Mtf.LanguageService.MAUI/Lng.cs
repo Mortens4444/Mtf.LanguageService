@@ -25,25 +25,17 @@ namespace Mtf.LanguageService
                 var asm = typeof(Lng).Assembly;
                 var names = asm.GetManifestResourceNames();
 
-                // próbáljunk olyan resource nevet találni, ami a LanguageFile-re végződik
                 var resourceName = names
-                    .FirstOrDefault(n => n.EndsWith(LanguageFile, StringComparison.OrdinalIgnoreCase)
-                                         || n.IndexOf("Languages.ods", StringComparison.OrdinalIgnoreCase) >= 0);
+                    .FirstOrDefault(n => n.EndsWith(LanguageFile, StringComparison.OrdinalIgnoreCase) ||
+                    n.IndexOf("Languages.ods", StringComparison.OrdinalIgnoreCase) >= 0);
 
                 if (resourceName != null)
                 {
-                    using (var stream = asm.GetManifestResourceStream(resourceName))
-                    {
-                        if (stream == null)
-                            throw new InvalidOperationException($"Resource {resourceName} found but stream is null.");
-
-                        // Ha a loader tud Stream-ből olvasni:
-                        AllLanguageElements = languageElementLoader.LoadElements(stream);
-                        return;
-                    }
+                    using var stream = asm.GetManifestResourceStream(resourceName) ?? throw new InvalidOperationException($"Resource {resourceName} found but stream is null.");
+                    AllLanguageElements = languageElementLoader.LoadElements(stream);
+                    return;
                 }
 
-                // ha nem találtunk embedded resource-ot, visszaesés fájlrendszerre (opcionális)
                 var languageFiles = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, LanguageFile);
                 if (languageFiles.Length != 0)
                 {
