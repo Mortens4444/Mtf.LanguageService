@@ -2,6 +2,7 @@
 using Mtf.LanguageService.Interfaces;
 using Mtf.LanguageService.Models;
 using Mtf.LanguageService.Ods;
+using System.Diagnostics;
 using System.Globalization;
 
 namespace Mtf.LanguageService
@@ -47,7 +48,7 @@ namespace Mtf.LanguageService
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine("Lng static init failed: " + ex);
+                Debug.WriteLine("Lng static init failed: " + ex);
                 throw;
             }
         }
