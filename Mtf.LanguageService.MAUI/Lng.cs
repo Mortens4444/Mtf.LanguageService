@@ -57,7 +57,14 @@ namespace Mtf.LanguageService
         {
             var currentCulture = CultureInfo.CurrentCulture;
             var languageName = currentCulture.EnglishName.Split(' ').First();
-            DefaultLanguage = (Language)Enum.Parse(typeof(Language), languageName);
+            try
+            {
+                DefaultLanguage = (Language)Enum.Parse(typeof(Language), languageName);
+            }
+            catch
+            {
+                DefaultLanguage = Language.English;
+            }
         }
 
         public static string Elem(string elementIdentifier, int index = 0)
