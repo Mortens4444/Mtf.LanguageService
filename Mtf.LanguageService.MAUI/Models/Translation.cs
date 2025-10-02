@@ -14,7 +14,7 @@ namespace Mtf.LanguageService.Models
             ElementIdentifier = elementIdentifier;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is Translation translation)
             {
