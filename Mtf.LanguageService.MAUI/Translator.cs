@@ -18,7 +18,10 @@ namespace Mtf.LanguageService.MAUI
         /// <returns>Dictionary, ahol a kulcs az objektum, az érték az eredeti szöveg.</returns>
         public static Dictionary<object, string> Translate(Page page)
         {
-            if (page == null) throw new ArgumentNullException(nameof(page));
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
 
             var originals = new Dictionary<object, string>();
             TranslateElement(page, originals);
@@ -32,14 +35,20 @@ namespace Mtf.LanguageService.MAUI
         /// </summary>
         public static void SetOriginalTexts(Dictionary<object, string> originalTexts)
         {
-            if (originalTexts == null) throw new ArgumentNullException(nameof(originalTexts));
+            if (originalTexts == null)
+            {
+                throw new ArgumentNullException(nameof(originalTexts));
+            }
 
             foreach (var kv in originalTexts)
             {
                 var target = kv.Key;
                 var originalValue = kv.Value;
 
-                if (target == null) continue;
+                if (target == null)
+                {
+                    continue;
+                }
 
                 if (PropertyMap.TryGetValue(target, out var propName))
                 {
@@ -82,7 +91,10 @@ namespace Mtf.LanguageService.MAUI
             if (element is Layout layout)
             {
                 foreach (var child in layout.Children)
+                {
                     TranslateElement(child, originals);
+                }
+
                 return;
             }
 
@@ -94,7 +106,9 @@ namespace Mtf.LanguageService.MAUI
                 if (itemsView.ItemsSource is IEnumerable enumerable)
                 {
                     foreach (var item in enumerable)
+                    {
                         TranslateElement(item, originals);
+                    }
                 }
                 return;
             }
@@ -102,7 +116,10 @@ namespace Mtf.LanguageService.MAUI
             if (element is IEnumerable enumerableElement && !(element is string))
             {
                 foreach (var item in enumerableElement)
+                {
                     TranslateElement(item, originals);
+                }
+
                 return;
             }
 
@@ -134,7 +151,10 @@ namespace Mtf.LanguageService.MAUI
                 }
 
                 var val = prop.GetValue(target) as string;
-                if (String.IsNullOrEmpty(val)) return false;
+                if (String.IsNullOrEmpty(val))
+                {
+                    return false;
+                }
 
                 originals.TryAdd(target, val);
 
@@ -214,7 +234,10 @@ namespace Mtf.LanguageService.MAUI
 
         private static void TryRestoreSpecialCases(object target, string originalValue)
         {
-            if (target == null) return;
+            if (target == null)
+            {
+                return;
+            }
 
             if (target is ToolbarItem ti)
             {
