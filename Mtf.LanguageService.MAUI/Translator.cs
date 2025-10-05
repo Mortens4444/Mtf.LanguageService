@@ -72,13 +72,16 @@ namespace Mtf.LanguageService.MAUI
 
         private static void TranslateElement(object element, Dictionary<object, string> originals)
         {
-            if (element == null) return;
+            if (element == null)
+            {
+                return;
+            }
 
             foreach (var prop in CommonProperties)
             {
                 if (TryTranslateProperty(element, prop, originals))
                 {
-                    return;
+                    //return;
                 }
             }
 
