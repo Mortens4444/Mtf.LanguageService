@@ -65,11 +65,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-    <PackageReference Include="Mtf.Extensions" Version="1.0.23" />
+    <PackageReference Include="Mtf.Extensions" Version="1.0.24" />
   </ItemGroup>
 
   <PropertyGroup>
-    <Version>1.0.36</Version>
+    <Version>1.0.37</Version>
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <FileVersion>$(Version)</FileVersion>
     <InformationalVersion>$(Version)</InformationalVersion>
