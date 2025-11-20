@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Mtf.LanguageService.MAUI.Converters;
 
-internal class EnumDescriptionTranslationConverter : IValueConverter
+public class EnumDescriptionTranslationConverter : IValueConverter
 {
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
