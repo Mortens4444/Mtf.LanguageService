@@ -111,9 +111,9 @@ namespace Mtf.LanguageService.Ods
 
                     var language = (Language)Enum.Parse(typeof(Language), table.TableName);
 
-                    var englishText = OdsLanguageElementLoader.GetRowValue(dataSet.Tables["English"].Rows[i]);
-                    var key = new Translation(language, OdsLanguageElementLoader.Normalize(englishText));
-                    var currentRowValue = OdsLanguageElementLoader.Normalize(OdsLanguageElementLoader.GetRowValue(row));
+                    var englishText = GetRowValue(dataSet.Tables["English"].Rows[i]);
+                    var key = new Translation(language, Normalize(englishText));
+                    var currentRowValue = Normalize(GetRowValue(row));
                     if (!String.IsNullOrEmpty(currentRowValue))
                     {
                         if (allLanguageElements.ContainsKey(key))
