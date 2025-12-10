@@ -1,5 +1,4 @@
-﻿using Mtf.LanguageService.MAUI.Converters;
-using System.Collections;
+﻿using System.Collections;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -55,8 +54,6 @@ namespace Mtf.LanguageService.MAUI
 
                 if (PropertyMap.TryGetValue(target, out var propName))
                 {
-                    TrySetProperty(target, propName, originalValue);
-
                     if (target is BindableObject bo && OriginalBindings.TryGetValue(target, out var originalBinding))
                     {
                         var bp = GetBindableProperty(target.GetType(), propName);
@@ -66,6 +63,8 @@ namespace Mtf.LanguageService.MAUI
                             continue;
                         }
                     }
+
+                    TrySetProperty(target, propName, originalValue);
                     continue;
                 }
 
@@ -175,15 +174,6 @@ namespace Mtf.LanguageService.MAUI
                         if (binding != null)
                         {
                             OriginalBindings.Add(target, binding);
-                            var value = prop.GetValue(target) as string;
-                            if (String.IsNullOrEmpty(value))
-                            {
-                                return false;
-                            }
-
-                            Translate(target, propertyName, originals, prop, value);
-                            bo.SetBinding(bp, binding);
-                            return true;
                         }
                     }
                 }
