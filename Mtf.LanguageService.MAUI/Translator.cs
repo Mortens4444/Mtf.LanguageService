@@ -9,6 +9,8 @@ namespace Mtf.LanguageService.MAUI
     {
         private static readonly ConditionalWeakTable<object, string> PropertyMap = new ConditionalWeakTable<object, string>();
 
+        private static readonly ConditionalWeakTable<object, BindingBase> OriginalBindings = new ConditionalWeakTable<object, BindingBase>();
+
         private static readonly string[] CommonProperties = new[] { "Text", "Title", "Header", "Placeholder", "Label", "Content" };
 
         /// <summary>
@@ -54,6 +56,16 @@ namespace Mtf.LanguageService.MAUI
                 if (PropertyMap.TryGetValue(target, out var propName))
                 {
                     TrySetProperty(target, propName, originalValue);
+
+                    if (target is BindableObject bo && OriginalBindings.TryGetValue(target, out var originalBinding))
+                    {
+                        var bp = GetBindableProperty(target.GetType(), propName);
+                        if (bp != null)
+                        {
+                            bo.SetBinding(bp, originalBinding);
+                            continue;
+                        }
+                    }
                     continue;
                 }
 
@@ -160,9 +172,18 @@ namespace Mtf.LanguageService.MAUI
                     if (bp != null)
                     {
                         var binding = GetBinding(bo, bp);
-                        if (HasTranslationConverter(binding))
+                        if (binding != null)
                         {
-                            return false;
+                            OriginalBindings.Add(target, binding);
+                            var value = prop.GetValue(target) as string;
+                            if (String.IsNullOrEmpty(value))
+                            {
+                                return false;
+                            }
+
+                            Translate(target, propertyName, originals, prop, value);
+                            bo.SetBinding(bp, binding);
+                            return true;
                         }
                     }
                 }
@@ -173,23 +194,28 @@ namespace Mtf.LanguageService.MAUI
                     return false;
                 }
 
-                originals.TryAdd(target, val);
-
-                try
-                {
-                    PropertyMap.Remove(target);
-                }
-                catch { }
-                PropertyMap.Add(target, propertyName);
-
-                var translated = Lng.Elem(val);
-                prop.SetValue(target, translated);
+                Translate(target, propertyName, originals, prop, val);
                 return true;
             }
             catch
             {
                 return false;
             }
+        }
+
+        private static void Translate(object target, string propertyName, Dictionary<object, string> originals, PropertyInfo prop, string val)
+        {
+            originals.TryAdd(target, val);
+
+            try
+            {
+                PropertyMap.Remove(target);
+            }
+            catch { }
+            PropertyMap.Add(target, propertyName);
+
+            var translated = Lng.Elem(val);
+            prop.SetValue(target, translated);
         }
 
         private static BindingBase? GetBinding(BindableObject bindable, BindableProperty property)
@@ -217,21 +243,21 @@ namespace Mtf.LanguageService.MAUI
             return null;
         }
 
-        private static bool HasTranslationConverter(BindingBase? binding)
-        {
-            if (binding is Binding b && b.Converter != null)
-            {
-                var convType = b.Converter.GetType();
-                var name = convType.Name ?? String.Empty;
+        //private static bool HasTranslationConverter(BindingBase? binding)
+        //{
+        //    if (binding is Binding b && b.Converter != null)
+        //    {
+        //        var convType = b.Converter.GetType();
+        //        var name = convType.Name ?? String.Empty;
 
-                if (name.Contains(nameof(TranslationConverter)) || name.Contains(nameof(EnumDescriptionTranslationConverter)))
-                {
-                    return true;
-                }
-            }
+        //        if (name.Contains(nameof(TranslationConverter)) || name.Contains(nameof(EnumDescriptionTranslationConverter)))
+        //        {
+        //            return true;
+        //        }
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
         private static void TryTranslateToolbarItems(Page page, Dictionary<object, string> originals)
         {
