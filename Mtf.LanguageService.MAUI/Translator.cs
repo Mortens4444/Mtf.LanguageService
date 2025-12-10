@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Mtf.LanguageService.MAUI.Converters;
+using System.Collections;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -153,6 +154,19 @@ namespace Mtf.LanguageService.MAUI
                     return false;
                 }
 
+                if (target is BindableObject bo)
+                {
+                    var bp = GetBindableProperty(type, propertyName);
+                    if (bp != null)
+                    {
+                        var binding = GetBinding(bo, bp);
+                        if (HasTranslationConverter(binding))
+                        {
+                            return false;
+                        }
+                    }
+                }
+
                 var val = prop.GetValue(target) as string;
                 if (String.IsNullOrEmpty(val))
                 {
@@ -176,6 +190,47 @@ namespace Mtf.LanguageService.MAUI
             {
                 return false;
             }
+        }
+
+        private static BindingBase? GetBinding(BindableObject bindable, BindableProperty property)
+        {
+            var methodInfo = typeof(BindableObject).GetMethod("GetContext", BindingFlags.NonPublic | BindingFlags.Instance);
+            var context = methodInfo?.Invoke(bindable, new object[] { property });
+
+            if (context != null)
+            {
+                var propertyInfo = context.GetType().GetProperty("Binding");
+                return propertyInfo?.GetValue(context) as BindingBase;
+            }
+
+            return null;
+        }
+
+        private static BindableProperty? GetBindableProperty(Type type, string propertyName)
+        {
+            var field = type.GetField(propertyName + "Property", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+            if (field != null && typeof(BindableProperty).IsAssignableFrom(field.FieldType))
+            {
+                return field.GetValue(null) as BindableProperty;
+            }
+
+            return null;
+        }
+
+        private static bool HasTranslationConverter(BindingBase? binding)
+        {
+            if (binding is Binding b && b.Converter != null)
+            {
+                var convType = b.Converter.GetType();
+                var name = convType.Name ?? String.Empty;
+
+                if (name.Contains(nameof(TranslationConverter)) || name.Contains(nameof(EnumDescriptionTranslationConverter)))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static void TryTranslateToolbarItems(Page page, Dictionary<object, string> originals)
