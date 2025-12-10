@@ -8,8 +8,6 @@ namespace Mtf.LanguageService.MAUI
     {
         private static readonly ConditionalWeakTable<object, string> PropertyMap = new ConditionalWeakTable<object, string>();
 
-        private static readonly ConditionalWeakTable<object, BindingBase> OriginalBindings = new ConditionalWeakTable<object, BindingBase>();
-
         private static readonly string[] CommonProperties = new[] { "Text", "Title", "Header", "Placeholder", "Label", "Content" };
 
         /// <summary>
@@ -54,16 +52,6 @@ namespace Mtf.LanguageService.MAUI
 
                 if (PropertyMap.TryGetValue(target, out var propName))
                 {
-                    if (target is BindableObject bo && OriginalBindings.TryGetValue(target, out var originalBinding))
-                    {
-                        var bp = GetBindableProperty(target.GetType(), propName);
-                        if (bp != null)
-                        {
-                            bo.SetBinding(bp, originalBinding);
-                            continue;
-                        }
-                    }
-
                     TrySetProperty(target, propName, originalValue);
                     continue;
                 }
@@ -173,7 +161,7 @@ namespace Mtf.LanguageService.MAUI
                         var binding = GetBinding(bo, bp);
                         if (binding != null)
                         {
-                            OriginalBindings.Add(target, binding);
+                            return false;
                         }
                     }
                 }
@@ -232,22 +220,6 @@ namespace Mtf.LanguageService.MAUI
 
             return null;
         }
-
-        //private static bool HasTranslationConverter(BindingBase? binding)
-        //{
-        //    if (binding is Binding b && b.Converter != null)
-        //    {
-        //        var convType = b.Converter.GetType();
-        //        var name = convType.Name ?? String.Empty;
-
-        //        if (name.Contains(nameof(TranslationConverter)) || name.Contains(nameof(EnumDescriptionTranslationConverter)))
-        //        {
-        //            return true;
-        //        }
-        //    }
-
-        //    return false;
-        //}
 
         private static void TryTranslateToolbarItems(Page page, Dictionary<object, string> originals)
         {
