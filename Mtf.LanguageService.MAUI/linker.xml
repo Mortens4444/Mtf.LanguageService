@@ -1,0 +1,34 @@
+﻿<!--<linker>
+  <assembly fullname="Microsoft.Maui.Controls">
+    <type fullname="Microsoft.Maui.Controls.BindableObject">
+      <method name="GetContext" />
+    </type>
+  </assembly>
+
+  <assembly fullname="Microsoft.Maui.Controls.Core">
+    <type fullname="Microsoft.Maui.Controls.Bindings">
+      <field name="Bindings" />
+    </type>
+    <type fullname="Microsoft.Maui.Controls.BindingContext">
+      <field name="_values" />
+    </type>
+  </assembly>
+</linker>-->
+<!--<linker>
+  <assembly fullname="Microsoft.Maui.Controls">
+    <type fullname="Microsoft.Maui.Controls.BindableObject">
+      <method name="GetContext" />
+    </type>
+  </assembly>
+  <assembly fullname="Microsoft.Maui.Controls.Core">
+    <type fullname="Microsoft.Maui.Controls.Bindings">
+      <field name="Bindings" />
+    </type>
+  </assembly>
+</linker>-->
+
+<linker>
+  <assembly fullname="Microsoft.Maui.Controls">
+    <type fullname="Microsoft.Maui.Controls.BindableObject" preserve="all" />
+  </assembly>
+</linker>

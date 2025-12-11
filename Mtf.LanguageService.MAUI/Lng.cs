@@ -1,135 +1,132 @@
 ﻿using Mtf.LanguageService.Enums;
-using Mtf.LanguageService.Interfaces;
+using Mtf.LanguageService.MAUI.Ods;
 using Mtf.LanguageService.Models;
-using Mtf.LanguageService.Ods;
 using System.Diagnostics;
 using System.Globalization;
 
-namespace Mtf.LanguageService
+namespace Mtf.LanguageService.MAUI;
+
+public static class Lng
 {
-    public static class Lng
+    private const string LanguageFile = "Languages.ods";
+
+    public static Language DefaultLanguage;
+
+    public static readonly Dictionary<Translation, List<string>> AllLanguageElements;
+
+    private static readonly OdsLanguageElementLoader languageElementLoader = new();
+
+    static Lng()
     {
-        private const string LanguageFile = "Languages.ods";
+        SetDefaultLanguage();
 
-        public static Language DefaultLanguage;
-
-        public static readonly Dictionary<Translation, List<string>> AllLanguageElements;
-
-        private static readonly ILanguageElementLoader languageElementLoader = new OdsLanguageElementLoader();
-
-        static Lng()
+        try
         {
-            SetDefaultLanguage();
+            var asm = typeof(Lng).Assembly;
+            var names = asm.GetManifestResourceNames();
 
-            try
+            var resourceName = names
+                .FirstOrDefault(n => n.EndsWith(LanguageFile, StringComparison.OrdinalIgnoreCase) || n.Contains("Languages.ods", StringComparison.OrdinalIgnoreCase));
+
+            if (resourceName != null)
             {
-                var asm = typeof(Lng).Assembly;
-                var names = asm.GetManifestResourceNames();
+                using var stream = asm.GetManifestResourceStream(resourceName) ?? throw new InvalidOperationException($"Resource {resourceName} found but stream is null.");
+                AllLanguageElements = languageElementLoader.LoadElements(stream);
+                return;
+            }
 
-                var resourceName = names
-                    .FirstOrDefault(n => n.EndsWith(LanguageFile, StringComparison.OrdinalIgnoreCase) ||
-                    n.IndexOf("Languages.ods", StringComparison.OrdinalIgnoreCase) >= 0);
+            var languageFiles = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, LanguageFile);
+            if (languageFiles.Length != 0)
+            {
+                AllLanguageElements = languageElementLoader.LoadElements(languageFiles.First());
+                return;
+            }
 
-                if (resourceName != null)
+            throw new InvalidOperationException($"Cannot find {LanguageFile} file as embedded resource or in directory {AppDomain.CurrentDomain.BaseDirectory}.");
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("Lng static init failed: " + ex);
+            throw;
+        }
+    }
+
+    private static void SetDefaultLanguage()
+    {
+        var currentCulture = CultureInfo.CurrentCulture;
+        var languageName = currentCulture.EnglishName.Split(' ').First();
+        try
+        {
+            DefaultLanguage = Enum.Parse<Language>(languageName);
+        }
+        catch
+        {
+            DefaultLanguage = Language.English;
+        }
+    }
+
+    public static string Elem(string elementIdentifier, int index = 0)
+    {
+        return Elem(DefaultLanguage, elementIdentifier, index);
+    }
+
+    public static string FormattedElem(string elementIdentifier, int index = 0, params object[] args)
+    {
+        var elem = Elem(DefaultLanguage, elementIdentifier, index);
+        return String.Format(elem, args);
+    }
+
+    public static string FormattedElem(Language toLanguage, string elementIdentifier, int index = 0, params object[] args)
+    {
+        var elem = Elem(toLanguage, elementIdentifier, index);
+        return string.Format(elem, args);
+    }
+
+    /// <summary>
+    /// Get a translation of an English expression.
+    /// </summary>
+    /// <param name="toLanguage">The language of the requested translation.</param>
+    /// <param name="elementIdentifier">The requested element, which wanted to be translated (must be in English).</param>
+    /// <param name="index">Index of the specified translations. If not set, it will return the first translation.</param>
+    /// <returns>Returns the translation or the requested element itself, if it is not present in the dictionary.</returns>
+    public static string Elem(Language toLanguage, string elementIdentifier, int index = 0)
+    {
+        var result = GetLanguageElement(elementIdentifier, index, toLanguage);
+        if (string.IsNullOrEmpty(result))
+        {
+            result = GetLanguageElement(elementIdentifier, index);
+        }
+        return string.IsNullOrEmpty(result) ? elementIdentifier : result;
+    }
+
+    /// <summary>
+    /// Get a translation of an expression.
+    /// </summary>
+    /// <param name="fromLanguage">The language of the language element.</param>
+    /// <param name="text">The text, which is needed to be translated.</param>
+    /// <param name="toLanguage">The translation destination language.</param>
+    /// <returns>The translated element if it's translation exists, otherwise the language element itself is returned.</returns>
+    public static string Translate(Language fromLanguage, string text, Language toLanguage)
+    {
+        foreach (var keyValuePair in AllLanguageElements.Where(elem => elem.Key.Language == fromLanguage))
+        {
+            if (keyValuePair.Value.Any(elem => elem == text))
+            {
+                if (toLanguage == Language.English)
                 {
-                    using var stream = asm.GetManifestResourceStream(resourceName) ?? throw new InvalidOperationException($"Resource {resourceName} found but stream is null.");
-                    AllLanguageElements = languageElementLoader.LoadElements(stream);
-                    return;
+                    return keyValuePair.Key.ElementIdentifier;
                 }
 
-                var languageFiles = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, LanguageFile);
-                if (languageFiles.Length != 0)
-                {
-                    AllLanguageElements = languageElementLoader.LoadElements(languageFiles.First());
-                    return;
-                }
-
-                throw new InvalidOperationException($"Cannot find {LanguageFile} file as embedded resource or in directory {AppDomain.CurrentDomain.BaseDirectory}.");
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Lng static init failed: " + ex);
-                throw;
+                return GetLanguageElement(keyValuePair.Key.ElementIdentifier, 0, toLanguage);
             }
         }
 
-        private static void SetDefaultLanguage()
-        {
-            var currentCulture = CultureInfo.CurrentCulture;
-            var languageName = currentCulture.EnglishName.Split(' ').First();
-            try
-            {
-                DefaultLanguage = (Language)Enum.Parse(typeof(Language), languageName);
-            }
-            catch
-            {
-                DefaultLanguage = Language.English;
-            }
-        }
+        return text;
+    }
 
-        public static string Elem(string elementIdentifier, int index = 0)
-        {
-            return Elem(DefaultLanguage, elementIdentifier, index);
-        }
-
-        public static string FormattedElem(string elementIdentifier, int index = 0, params object[] args)
-        {
-            var elem = Elem(DefaultLanguage, elementIdentifier, index);
-            return String.Format(elem, args);
-        }
-
-        public static string FormattedElem(Language toLanguage, string elementIdentifier, int index = 0, params object[] args)
-        {
-            var elem = Elem(toLanguage, elementIdentifier, index);
-            return String.Format(elem, args);
-        }
-
-        /// <summary>
-        /// Get a translation of an English expression.
-        /// </summary>
-        /// <param name="toLanguage">The language of the requested translation.</param>
-        /// <param name="elementIdentifier">The requested element, which wanted to be translated (must be in English).</param>
-        /// <param name="index">Index of the specified translations. If not set, it will return the first translation.</param>
-        /// <returns>Returns the translation or the requested element itself, if it is not present in the dictionary.</returns>
-        public static string Elem(Language toLanguage, string elementIdentifier, int index = 0)
-        {
-            var result = GetLanguageElement(elementIdentifier, index, toLanguage);
-            if (String.IsNullOrEmpty(result))
-            {
-                result = GetLanguageElement(elementIdentifier, index);
-            }
-            return String.IsNullOrEmpty(result) ? elementIdentifier : result;
-        }
-
-        /// <summary>
-        /// Get a translation of an expression.
-        /// </summary>
-        /// <param name="fromLanguage">The language of the language element.</param>
-        /// <param name="languageElement">The language element, which is needed to be translated.</param>
-        /// <param name="toLanguage">The translation destination language.</param>
-        /// <returns>The translated element if it's translation exists, otherwise the language element itself is returned.</returns>
-        public static string Translate(Language fromLanguage, string languageElement, Language toLanguage)
-        {
-            foreach (var keyValuePair in AllLanguageElements.Where(elem => elem.Key.Language == fromLanguage))
-            {
-                if (keyValuePair.Value.Any(elem => elem == languageElement))
-                {
-                    if (toLanguage == Language.English)
-                    {
-                        return keyValuePair.Key.ElementIdentifier;
-                    }
-
-                    return GetLanguageElement(keyValuePair.Key.ElementIdentifier, 0, toLanguage);
-                }
-            }
-
-            return languageElement;
-        }
-
-        private static string GetLanguageElement(string elementIdentifier, int index, Language language = Language.English)
-        {
-            var key = new Translation(language, elementIdentifier);
-            return AllLanguageElements != null && AllLanguageElements.TryGetValue(key, out var value) ? value[index] : null;
-        }
+    private static string GetLanguageElement(string elementIdentifier, int index, Language language = Language.English)
+    {
+        var key = new Translation(language, elementIdentifier);
+        return AllLanguageElements != null && AllLanguageElements.TryGetValue(key, out var value) ? value[index] : String.Empty;
     }
 }

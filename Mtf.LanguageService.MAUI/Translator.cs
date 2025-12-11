@@ -6,39 +6,38 @@ namespace Mtf.LanguageService.MAUI
 {
     public static class Translator
     {
-        private static readonly ConditionalWeakTable<object, string> PropertyMap = new ConditionalWeakTable<object, string>();
-
+        private static readonly ConditionalWeakTable<object, string> PropertyMap = new();
         private static readonly string[] CommonProperties = new[] { "Text", "Title", "Header", "Placeholder", "Label", "Content" };
 
         /// <summary>
-        /// Lefordítja a Page-et és alárendeltjeit. Visszatér egy Dictionary-dal,
-        /// amely tartalmazza az objektumokat és az eredeti szövegüket.
+        /// Translates the given Page and all of its descendants.  
+        /// Returns a dictionary that contains each object and its original text value.
         /// </summary>
-        /// <param name="page">A lefordítandó Page.</param>
-        /// <returns>Dictionary, ahol a kulcs az objektum, az érték az eredeti szöveg.</returns>
+        /// <param name="page">The Page to translate.</param>
+        /// <returns>
+        /// A dictionary where the key is the object and the value is its original text.
+        /// </returns>
+        /// <remarks>
+        /// WARNING: This process may break existing data bindings.  
+        /// It modifies string-based UI properties directly, which can override or detach bindings
+        /// applied to those properties.
+        /// </remarks>
         public static Dictionary<object, string> Translate(Page page)
         {
-            if (page == null)
-            {
-                throw new ArgumentNullException(nameof(page));
-            }
+            ArgumentNullException.ThrowIfNull(page);
 
             var originals = new Dictionary<object, string>();
             TranslateElement(page, originals);
-            // ToolbarItems külön: Page.ToolbarItems gyakori hely a szövegeknek (ToolBarItem.Text)
             TryTranslateToolbarItems(page, originals);
             return originals;
         }
 
         /// <summary>
-        /// Visszaállítja az eredeti szövegeket a korábban Translate által visszaadott dictionary alapján.
+        /// Restores the original text values based on the dictionary previously returned by Translate.
         /// </summary>
         public static void SetOriginalTexts(Dictionary<object, string> originalTexts)
         {
-            if (originalTexts == null)
-            {
-                throw new ArgumentNullException(nameof(originalTexts));
-            }
+            ArgumentNullException.ThrowIfNull(originalTexts);
 
             foreach (var kv in originalTexts)
             {
@@ -70,7 +69,7 @@ namespace Mtf.LanguageService.MAUI
 
         #region Implementation
 
-        private static void TranslateElement(object element, Dictionary<object, string> originals)
+        private static void TranslateElement(object? element, Dictionary<object, string> originals)
         {
             if (element == null)
             {
@@ -79,10 +78,7 @@ namespace Mtf.LanguageService.MAUI
 
             foreach (var prop in CommonProperties)
             {
-                if (TryTranslateProperty(element, prop, originals))
-                {
-                    //return;
-                }
+                _ = TryTranslateProperty(element, prop, originals);
             }
 
             if (element is IContentView contentView)
@@ -103,8 +99,8 @@ namespace Mtf.LanguageService.MAUI
 
             if (element is ItemsView itemsView)
             {
-                TryTranslateProperty(itemsView, "Header", originals);
-                TryTranslateProperty(itemsView, "Footer", originals);
+                _ = TryTranslateProperty(itemsView, "Header", originals);
+                _ = TryTranslateProperty(itemsView, "Footer", originals);
 
                 if (itemsView.ItemsSource is IEnumerable enumerable)
                 {
@@ -116,7 +112,7 @@ namespace Mtf.LanguageService.MAUI
                 return;
             }
 
-            if (element is IEnumerable enumerableElement && !(element is string))
+            if (element is IEnumerable enumerableElement && element is not string)
             {
                 foreach (var item in enumerableElement)
                 {
@@ -153,19 +149,6 @@ namespace Mtf.LanguageService.MAUI
                     return false;
                 }
 
-                if (target is BindableObject bo)
-                {
-                    var bp = GetBindableProperty(type, propertyName);
-                    if (bp != null)
-                    {
-                        var binding = GetBinding(bo, bp);
-                        if (binding != null)
-                        {
-                            return false;
-                        }
-                    }
-                }
-
                 var val = prop.GetValue(target) as string;
                 if (String.IsNullOrEmpty(val))
                 {
@@ -181,44 +164,22 @@ namespace Mtf.LanguageService.MAUI
             }
         }
 
-        private static void Translate(object target, string propertyName, Dictionary<object, string> originals, PropertyInfo prop, string val)
+        private static void Translate(object target, string propertyName, Dictionary<object, string> originals, PropertyInfo prop, string originalText)
         {
-            originals.TryAdd(target, val);
-
-            try
+            var translated = Lng.Elem(originalText);
+            if (translated != originalText)
             {
-                PropertyMap.Remove(target);
+                originals.TryAdd(target, originalText);
+
+                try
+                {
+                    PropertyMap.Remove(target);
+                }
+                catch { }
+                PropertyMap.Add(target, propertyName);
+
+                prop.SetValue(target, translated);
             }
-            catch { }
-            PropertyMap.Add(target, propertyName);
-
-            var translated = Lng.Elem(val);
-            prop.SetValue(target, translated);
-        }
-
-        private static BindingBase? GetBinding(BindableObject bindable, BindableProperty property)
-        {
-            var methodInfo = typeof(BindableObject).GetMethod("GetContext", BindingFlags.NonPublic | BindingFlags.Instance);
-            var context = methodInfo?.Invoke(bindable, new object[] { property });
-
-            if (context != null)
-            {
-                var propertyInfo = context.GetType().GetProperty("Binding");
-                return propertyInfo?.GetValue(context) as BindingBase;
-            }
-
-            return null;
-        }
-
-        private static BindableProperty? GetBindableProperty(Type type, string propertyName)
-        {
-            var field = type.GetField(propertyName + "Property", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
-            if (field != null && typeof(BindableProperty).IsAssignableFrom(field.FieldType))
-            {
-                return field.GetValue(null) as BindableProperty;
-            }
-
-            return null;
         }
 
         private static void TryTranslateToolbarItems(Page page, Dictionary<object, string> originals)

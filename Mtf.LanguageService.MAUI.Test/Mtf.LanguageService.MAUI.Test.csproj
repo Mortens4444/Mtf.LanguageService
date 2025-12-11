@@ -73,4 +73,10 @@
 	  <ProjectReference Include="..\Mtf.LanguageService.MAUI\Mtf.LanguageService.MAUI.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <MauiXaml Update="Views\QualificationDetailsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
 </Project>

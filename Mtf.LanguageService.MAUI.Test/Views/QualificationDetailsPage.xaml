@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<v:NotifierPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:conv="clr-namespace:Mtf.Maui.Controls.Converters;assembly=Mtf.Maui.Controls"
+                xmlns:c="clr-namespace:Mtf.LanguageService.MAUI.Converters;assembly=Mtf.LanguageService.MAUI"
+                xmlns:v="clr-namespace:Mtf.LanguageService.MAUI.Views;assembly=Mtf.LanguageService.MAUI"
+                xmlns:vm="clr-namespace:Mtf.LanguageService.MAUI.Test.ViewModels"
+                x:Class="Mtf.LanguageService.MAUI.Test.Views.QualificationDetailsPage"
+                x:DataType="vm:QualificationDetailsViewModel"
+                x:ClassModifier="internal">
+
+    <v:NotifierPage.Resources>
+        <ResourceDictionary>
+            <c:TranslationConverter x:Key="TranslationConverter" />
+        </ResourceDictionary>
+    </v:NotifierPage.Resources>
+
+    <ScrollView>
+        <StackLayout Padding="12" Spacing="12">
+
+            <Border Padding="12" Stroke="#E6E6E6">
+                <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="16" RowSpacing="8">
+
+                    <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="6">
+                        <!--<Label Text="{Binding RequiredSpText}" />--> <!-- Note this breaks the binding -->
+                        <HorizontalStackLayout>
+                            <Label Text="{Binding RequiredSp}" />
+                            <Label Text="SP" Margin="5,0,0,0" />
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+
+                    <Picker Title="Level" Grid.Row="1" ItemsSource="{Binding AvailableLevels}" SelectedItem="{Binding SelectedLevel, Mode=TwoWay}"
+                            ItemDisplayBinding="{Binding ., Converter={StaticResource TranslationConverter}}" WidthRequest="220" HorizontalOptions="Start" />
+                </Grid>
+            </Border>
+
+        </StackLayout>
+    </ScrollView>
+</v:NotifierPage>

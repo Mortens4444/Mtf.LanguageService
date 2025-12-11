@@ -1,14 +1,13 @@
 ﻿using Mtf.LanguageService.Enums;
 
-namespace Mtf.LanguageService.MAUI.Test
+namespace Mtf.LanguageService.MAUI.Test;
+
+public partial class MainPage : ContentPage
 {
-    public partial class MainPage : ContentPage
+    public MainPage()
     {
-        public MainPage()
-        {
-            InitializeComponent();
-            Lng.DefaultLanguage = Language.Hungarian;
-            Translator.Translate(this);
-        }
+        InitializeComponent();
+        Lng.DefaultLanguage = Language.Hungarian;
+        Translator.Translate(this);
     }
 }

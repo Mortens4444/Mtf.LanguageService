@@ -87,14 +87,14 @@ namespace Mtf.LanguageService
         /// Get a translation of an expression.
         /// </summary>
         /// <param name="fromLanguage">The language of the language element.</param>
-        /// <param name="languageElement">The language element, which is needed to be translated.</param>
+        /// <param name="text">The text, which is needed to be translated.</param>
         /// <param name="toLanguage">The translation destination language.</param>
         /// <returns>The translated element if it's translation exists, otherwise the language element itself is returned.</returns>
-        public static string Translate(Language fromLanguage, string languageElement, Language toLanguage)
+        public static string Translate(Language fromLanguage, string text, Language toLanguage)
         {
             foreach (var keyValuePair in AllLanguageElements.Where(elem => elem.Key.Language == fromLanguage))
             {
-                if (keyValuePair.Value.Any(elem => elem == languageElement))
+                if (keyValuePair.Value.Any(elem => elem == text))
                 {
                     if (toLanguage == Language.English)
                     {
@@ -105,7 +105,7 @@ namespace Mtf.LanguageService
                 }
             }
 
-            return languageElement;
+            return text;
         }
 
         private static string GetLanguageElement(string elementIdentifier, int index, Language language = Language.English)
