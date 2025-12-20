@@ -97,6 +97,32 @@ namespace Mtf.LanguageService.MAUI
                 return;
             }
 
+            if (element is CollectionView collectionView)
+            {
+                _ = TryTranslateProperty(collectionView, "Header", originals);
+                _ = TryTranslateProperty(collectionView, "Footer", originals);
+
+                if (collectionView.Header is View headerView)
+                {
+                    TranslateElement(headerView, originals);
+                }
+
+                if (collectionView.Footer is View footerView)
+                {
+                    TranslateElement(footerView, originals);
+                }
+
+                if (collectionView.ItemsSource is IEnumerable cvEnumerable)
+                {
+                    foreach (var item in cvEnumerable)
+                    {
+                        TranslateElement(item, originals);
+                    }
+                }
+
+                return;
+            }
+
             if (element is ItemsView itemsView)
             {
                 _ = TryTranslateProperty(itemsView, "Header", originals);
