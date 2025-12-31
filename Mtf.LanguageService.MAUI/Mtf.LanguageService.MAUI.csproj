@@ -65,12 +65,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-    <PackageReference Include="Mtf.Extensions" Version="1.0.24" />
+    <PackageReference Include="Mtf.Extensions" Version="1.0.25" />
     <PackageReference Include="Mtf.Maui.Controls" Version="3.0.52" />
   </ItemGroup>
 
   <PropertyGroup>
-    <Version>2.0.87</Version>
+    <Version>2.0.88</Version>
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <FileVersion>$(Version)</FileVersion>
     <InformationalVersion>$(Version)</InformationalVersion>
