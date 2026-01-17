@@ -63,6 +63,14 @@ namespace Mtf.LanguageService.MAUI
                     }
                 }
 
+                if (PropertyMap.TryGetValue(target, out var ttPropName)
+                    && ttPropName == "Text"
+                    && target is BindableObject bindable)
+                {
+                    ToolTipProperties.SetText(bindable, originalValue);
+                    continue;
+                }
+
                 TryRestoreSpecialCases(target, originalValue);
             }
         }
@@ -75,6 +83,8 @@ namespace Mtf.LanguageService.MAUI
             {
                 return;
             }
+            
+            TryTranslateToolTip(element, originals);
 
             foreach (var prop in CommonProperties)
             {
@@ -151,6 +161,39 @@ namespace Mtf.LanguageService.MAUI
             if (element is Page page)
             {
                 TryTranslateToolbarItems(page, originals);
+            }
+        }
+
+        private static void TryTranslateToolTip(object target, Dictionary<object, string> originals)
+        {
+            try
+            {
+                if (target is not BindableObject bindable)
+                {
+                    return;
+                }
+
+                var text = ToolTipProperties.GetText(bindable) as string;
+                if (String.IsNullOrEmpty(text))
+                {
+                    return;
+                }
+
+                var translated = Lng.Elem(text);
+                if (translated == text)
+                {
+                    return;
+                }
+
+                originals.TryAdd(bindable, text);
+
+                PropertyMap.Remove(bindable);
+                PropertyMap.Add(bindable, "Text");
+
+                ToolTipProperties.SetText(bindable, translated);
+            }
+            catch
+            {
             }
         }
 

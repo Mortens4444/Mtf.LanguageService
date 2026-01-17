@@ -11,6 +11,8 @@
             <Label Text="Back" />
 
             <mc:MenuItem LabelText="Blind fighting" PageType="{x:Type v:QualificationDetailsPage}" WidthRequest="100" HeightRequest="100" />
+
+            <Button Text="⟲" BackgroundColor="Orange" ToolTipProperties.Text="Clear all"/>
         </VerticalStackLayout>
     </ScrollView>
 
