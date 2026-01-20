@@ -24,6 +24,7 @@ public partial class NotifierPage : ContentPage
         {
             _ = DisplayError(message);
         });
+        Debug.WriteLine("NotifierPage created & registered");
     }
 
     protected override void OnAppearing()
@@ -91,6 +92,8 @@ public partial class NotifierPage : ContentPage
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
-        WeakReferenceMessenger.Default.UnregisterAll(this);
+        WeakReferenceMessenger.Default.Unregister<ShowPage>(this);
+        WeakReferenceMessenger.Default.Unregister<ShowInfoMessage>(this);
+        WeakReferenceMessenger.Default.Unregister<ShowErrorMessage>(this);
     }
 }
