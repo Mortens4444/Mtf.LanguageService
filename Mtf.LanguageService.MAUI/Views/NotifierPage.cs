@@ -52,7 +52,7 @@ public partial class NotifierPage : ContentPage
     {
         return Dispatcher.DispatchAsync(() =>
         {
-            return DisplayAlert(message.Title, message.Message, Lng.Elem("OK"));
+            return DisplayAlertAsync(message.Title, message.Message, Lng.Elem("OK"));
         });
     }
 
@@ -71,7 +71,7 @@ public partial class NotifierPage : ContentPage
             }
 
             var title = Lng.Elem("Error");
-            var displayMessage = finalException?.Message ?? message.Value;
+            var displayMessage = Lng.Elem(finalException?.Message ?? message.Value);
 
             if (finalException != null)
             {
@@ -98,7 +98,7 @@ public partial class NotifierPage : ContentPage
 #endif
             }
 
-            return DisplayAlert(title, displayMessage, Lng.Elem("OK")).ConfigureAwait(false);
+            return DisplayAlertAsync(title, displayMessage, Lng.Elem("OK")).ConfigureAwait(false);
         });
     }
 
