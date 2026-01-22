@@ -52,7 +52,7 @@ public partial class NotifierPage : ContentPage
     {
         return Dispatcher.DispatchAsync(() =>
         {
-            return DisplayAlert(message.Title, message.Message, "OK");
+            return DisplayAlert(message.Title, message.Message, Lng.Elem("OK"));
         });
     }
 
@@ -60,32 +60,45 @@ public partial class NotifierPage : ContentPage
     {
         return Dispatcher.DispatchAsync(() =>
         {
-            var exceptionDetails = message.Value;
-            if (message.Exception != null)
+            var finalException = message.Exception;
+
+            if (finalException != null && message.ShowInnerException)
             {
-                var stackTrace = new StackTrace(message.Exception, true);
-                var exception = message.Exception;
-                var frame = new StackTrace(exception, true).GetFrame(0);
-
-                string callingMethod = frame?.GetMethod()?.Name ?? "N/A";
-                string callingClass = frame?.GetMethod()?.DeclaringType?.FullName ?? "N/A";
-                int lineNumber = frame?.GetFileLineNumber() ?? 0;
-
-                string title = "ERROR: " + callingMethod;
-                string fullMessage = $"{exceptionDetails}\n\n" +
-                                     $"Source Class: {callingClass}\n" +
-                                     $"Method: {callingMethod}\n" +
-                                     $"Line: {lineNumber}\n\n" +
-                                     $"Full Stack Trace:\n{exception.StackTrace}";
-                try
+                while (finalException.InnerException != null)
                 {
-                    Clipboard.SetTextAsync(fullMessage).ConfigureAwait(false).GetAwaiter().GetResult();
+                    finalException = finalException.InnerException;
                 }
-                catch { }
-                return DisplayAlert(title, fullMessage, "OK").ConfigureAwait(false);
             }
 
-            return DisplayAlert("Error", exceptionDetails, "OK").ConfigureAwait(false);
+            var title = Lng.Elem("Error");
+            var displayMessage = finalException?.Message ?? message.Value;
+
+            if (finalException != null)
+            {
+#if DEBUG
+            var frame = new StackTrace(finalException, true).GetFrame(0);
+            string callingMethod = frame?.GetMethod()?.Name ?? "N/A";
+            string callingClass = frame?.GetMethod()?.DeclaringType?.FullName ?? "N/A";
+            int lineNumber = frame?.GetFileLineNumber() ?? 0;
+
+            title = $"{Lng.Elem("Error")} (DEBUG): {callingMethod}";
+            
+            displayMessage = $"{displayMessage}\n\n" +
+                             $"----------------------------\n" +
+                             $"Source Class: {callingClass}\n" +
+                             $"Method: {callingMethod}\n" +
+                             $"Line: {lineNumber}\n\n" +
+                             $"Full Stack Trace:\n{finalException.StackTrace}";
+
+            try
+            {
+                Clipboard.SetTextAsync(displayMessage).ConfigureAwait(false).GetAwaiter().GetResult();
+            }
+            catch { }
+#endif
+            }
+
+            return DisplayAlert(title, displayMessage, Lng.Elem("OK")).ConfigureAwait(false);
         });
     }
 
