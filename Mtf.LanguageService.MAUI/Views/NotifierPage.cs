@@ -14,15 +14,15 @@ public partial class NotifierPage : ContentPage
         AutoTranslate = autoTranslate;
         WeakReferenceMessenger.Default.Register<ShowPage>(this, (sender, message) =>
         {
-            _ = ShowPageHandler(message);
+            Dispatcher.Dispatch(() => ShowPageHandler(message));
         });
         WeakReferenceMessenger.Default.Register<ShowInfoMessage>(this, (sender, message) =>
         {
-            _ = DisplayAlert(message);
+            Dispatcher.Dispatch(() => DisplayAlert(message));
         });
         WeakReferenceMessenger.Default.Register<ShowErrorMessage>(this, (sender, message) =>
         {
-            _ = DisplayError(message);
+            Dispatcher.Dispatch(() => DisplayError(message));
         });
         Debug.WriteLine("NotifierPage created & registered");
     }
