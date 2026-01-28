@@ -12,6 +12,11 @@ public partial class NotifierPage : ContentPage
     public NotifierPage(bool autoTranslate = true)
     {
         AutoTranslate = autoTranslate;
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
         WeakReferenceMessenger.Default.Register<ShowPage>(this, (sender, message) =>
         {
             Dispatcher.Dispatch(() => ShowPageHandler(message));
@@ -24,12 +29,7 @@ public partial class NotifierPage : ContentPage
         {
             Dispatcher.Dispatch(() => DisplayError(message));
         });
-        Debug.WriteLine("NotifierPage created & registered");
-    }
 
-    protected override void OnAppearing()
-    {
-        base.OnAppearing();
         try
         {
             if (AutoTranslate)
