@@ -162,6 +162,16 @@ namespace Mtf.LanguageService.MAUI
             {
                 TryTranslateToolbarItems(page, originals);
             }
+
+            if (element is IVisualTreeElement vte)
+            {
+                foreach (var child in vte.GetVisualChildren())
+                {
+                    TranslateElement(child as Element, originals);
+                }
+
+                return;
+            }
         }
 
         private static void TryTranslateToolTip(object target, Dictionary<object, string> originals)

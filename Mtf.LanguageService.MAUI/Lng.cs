@@ -1,6 +1,7 @@
 ﻿using Mtf.LanguageService.Enums;
 using Mtf.LanguageService.MAUI.Ods;
 using Mtf.LanguageService.Models;
+using System;
 using System.Diagnostics;
 using System.Globalization;
 
@@ -65,38 +66,127 @@ public static class Lng
         }
     }
 
+    /// <summary>
+    /// Returns the translated text for the specified element identifier 
+    /// using the current default language.
+    /// </summary>
+    /// <param name="elementIdentifier">
+    /// The identifier of the element to translate. 
+    /// The identifier must correspond to the base (English) key.
+    /// </param>
+    /// <param name="index">
+    /// Optional index of the translation variant. 
+    /// If not specified, the first available translation is returned.
+    /// </param>
+    /// <returns>
+    /// The translated string if found; otherwise the original 
+    /// <paramref name="elementIdentifier"/> value.
+    /// </returns>
     public static string Elem(string elementIdentifier, int index = 0)
     {
         return Elem(DefaultLanguage, elementIdentifier, index);
     }
 
+    /// <summary>
+    /// Returns a formatted translated string using the current default language.
+    /// </summary>
+    /// <param name="elementIdentifier">
+    /// The identifier of the element to translate. 
+    /// The identifier must correspond to the base (English) key.
+    /// </param>
+    /// <param name="args">
+    /// Formatting arguments that will be applied using 
+    /// <see cref="string.Format(string, object[])"/>.
+    /// </param>
+    /// <returns>
+    /// The formatted translated string if found; otherwise the formatted 
+    /// <paramref name="elementIdentifier"/>.
+    /// </returns>
+    public static string FormattedElem(string elementIdentifier, params object[] args)
+    {
+        var elem = Elem(DefaultLanguage, elementIdentifier);
+        return String.Format(elem, args);
+    }
+
+    /// <summary>
+    /// Returns a formatted translated string using the current default language.
+    /// </summary>
+    /// <param name="elementIdentifier">
+    /// The identifier of the element to translate. 
+    /// The identifier must correspond to the base (English) key.
+    /// </param>
+    /// <param name="index">
+    /// Optional index of the translation variant. 
+    /// If not specified, the first available translation is returned.
+    /// </param>
+    /// <param name="args">
+    /// Formatting arguments that will be applied using <see cref="string.Format(string, object[])"/>.
+    /// </param>
+    /// <returns>
+    /// The formatted translated string if found; otherwise the formatted 
+    /// <paramref name="elementIdentifier"/>.
+    /// </returns>
     public static string FormattedElem(string elementIdentifier, int index = 0, params object[] args)
     {
         var elem = Elem(DefaultLanguage, elementIdentifier, index);
         return String.Format(elem, args);
     }
 
+    /// <summary>
+    /// Returns a formatted translated string in the specified language.
+    /// </summary>
+    /// <param name="toLanguage">
+    /// The target language of the translation.
+    /// </param>
+    /// <param name="elementIdentifier">
+    /// The identifier of the element to translate. 
+    /// The identifier must correspond to the base (English) key.
+    /// </param>
+    /// <param name="index">
+    /// Optional index of the translation variant. 
+    /// If not specified, the first available translation is returned.
+    /// </param>
+    /// <param name="args">
+    /// Formatting arguments that will be applied using <see cref="string.Format(string, object[])"/>.
+    /// </param>
+    /// <returns>
+    /// The formatted translated string if found; otherwise the formatted 
+    /// <paramref name="elementIdentifier"/>.
+    /// </returns>
     public static string FormattedElem(Language toLanguage, string elementIdentifier, int index = 0, params object[] args)
     {
         var elem = Elem(toLanguage, elementIdentifier, index);
-        return string.Format(elem, args);
+        return String.Format(elem, args);
     }
 
     /// <summary>
-    /// Get a translation of an English expression.
+    /// Returns the translated text for the specified element identifier 
+    /// in the requested language.
     /// </summary>
-    /// <param name="toLanguage">The language of the requested translation.</param>
-    /// <param name="elementIdentifier">The requested element, which wanted to be translated (must be in English).</param>
-    /// <param name="index">Index of the specified translations. If not set, it will return the first translation.</param>
-    /// <returns>Returns the translation or the requested element itself, if it is not present in the dictionary.</returns>
+    /// <param name="toLanguage">
+    /// The target language of the translation.
+    /// </param>
+    /// <param name="elementIdentifier">
+    /// The identifier of the element to translate. 
+    /// The identifier must correspond to the base (English) key.
+    /// </param>
+    /// <param name="index">
+    /// Optional index of the translation variant. 
+    /// If not specified, the first available translation is returned.
+    /// </param>
+    /// <returns>
+    /// The translated string if found in the requested language; 
+    /// if not available, falls back to the default language; 
+    /// if still not found, returns the original <paramref name="elementIdentifier"/>.
+    /// </returns>
     public static string Elem(Language toLanguage, string elementIdentifier, int index = 0)
     {
         var result = GetLanguageElement(elementIdentifier, index, toLanguage);
-        if (string.IsNullOrEmpty(result))
+        if (String.IsNullOrEmpty(result))
         {
             result = GetLanguageElement(elementIdentifier, index);
         }
-        return string.IsNullOrEmpty(result) ? elementIdentifier : result;
+        return String.IsNullOrEmpty(result) ? elementIdentifier : result;
     }
 
     /// <summary>
