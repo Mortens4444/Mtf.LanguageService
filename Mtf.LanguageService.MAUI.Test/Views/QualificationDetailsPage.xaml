@@ -34,6 +34,59 @@
                 </Grid>
             </Border>
 
+            <CollectionView Grid.Row="2" ItemsSource="{Binding AvailableLevels}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Stroke="Gray" StrokeThickness="1" Padding="10" Margin="0,0,0,10" StrokeShape="RoundRectangle 5">
+                            <VerticalStackLayout Spacing="8">
+                                <!--<Label Text="{Binding Name}" FontAttributes="Bold" TextColor="{StaticResource Primary}"/>-->
+
+                                <VerticalStackLayout>
+                                    <HorizontalStackLayout>
+                                        <Label Text="Health Points" FontSize="12" />
+                                        <Label Text=":" FontSize="12" FontAttributes="Bold" Margin="0,0,3,0" />
+                                        <!--<Label Text="{Binding ActualHealthPoints}" FontSize="12" />-->
+                                    </HorizontalStackLayout>
+
+                                    <!--<Slider Minimum="{Binding MinHp}" Maximum="{Binding MaxHp}" Value="{Binding ActualHealthPoints}" IsVisible="{Binding HasHpRange}" />
+                                    <Entry Text="{Binding ActualHealthPoints}"  Keyboard="Numeric" IsVisible="{Binding HasHpRange, Converter={StaticResource InverseBooleanConverter}}" />-->
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout IsVisible="{Binding HasPainTolerance}">
+                                    <HorizontalStackLayout>
+                                        <Label Text="Pain Tolerance" FontSize="12" />
+                                        <Label Text=":" FontSize="12" FontAttributes="Bold" Margin="0,0,3,0" />
+                                        <!--<Label Text="{Binding ActualPainTolerancePoints}" FontSize="12" />-->
+                                    </HorizontalStackLayout>
+                                    <!--<Slider Minimum="{Binding MinPtp}" Maximum="{Binding MaxPtp}" Value="{Binding ActualPainTolerancePoints}" IsVisible="{Binding HasPtpRange}" />-->
+
+                                    <!--<Entry Text="{Binding ActualPainTolerancePoints}" Keyboard="Numeric"
+                                           IsVisible="{Binding HasPtpRange, Converter={StaticResource InverseBooleanConverter}}" />-->
+                                </VerticalStackLayout>
+
+                                <!--<Grid ColumnDefinitions="*, *, *" ColumnSpacing="10">
+                                    <mc:NumericUpDownWithLabel Label="Distance" Value="{Binding Distance}" />
+
+                                    <VerticalStackLayout Grid.Column="1">
+                                        <Label Text="Strategy" FontSize="10"/>
+                                        --><!--<Picker ItemsSource="{Binding AttackStrategies}"
+                                            SelectedItem="{Binding Strategy}"
+                                            ItemDisplayBinding="{Binding ., Converter={StaticResource EnumDescriptionTranslationConverter}}" />--><!--
+                                    </VerticalStackLayout>
+
+                                    <VerticalStackLayout Grid.Column="2">
+                                        <Label Text="Direction" FontSize="10"/>
+                                        --><!--<Picker ItemsSource="{Binding AttackDirections}"
+                                            SelectedItem="{Binding Direction}"
+                                            ItemDisplayBinding="{Binding ., Converter={StaticResource EnumDescriptionTranslationConverter}}" />--><!--
+                                    </VerticalStackLayout>
+                                </Grid>-->
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
         </StackLayout>
     </ScrollView>
 </v:NotifierPage>
