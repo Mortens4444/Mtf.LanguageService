@@ -7,8 +7,7 @@ namespace Mtf.LanguageService.MAUI
     public static class Translator
     {
         private static readonly ConditionalWeakTable<object, string> PropertyMap = new();
-        private static readonly string[] CommonProperties = new[] { "Text", "Title", "Header", "Placeholder", "Label", "Content" };
-
+        private static readonly string[] CommonProperties = new[] { "Text", "Title", "Header", "Placeholder", "Label", "Content", "Caption", "Description", "HeaderText", "LabelText", "ButtonText", "TitleText" };
         /// <summary>
         /// Translates the given Page and all of its descendants.  
         /// Returns a dictionary that contains each object and its original text value.
@@ -220,6 +219,31 @@ namespace Mtf.LanguageService.MAUI
                 var prop = type.GetRuntimeProperty(propertyName);
                 if (prop == null)
                 {
+                    return false;
+                }
+
+                if (prop.PropertyType == typeof(FormattedString) && prop.CanRead && prop.CanWrite)
+                {
+                    var fs = prop.GetValue(target) as FormattedString;
+                    if (fs != null)
+                    {
+                        var originalCombined = string.Join("\n", fs.Spans.Select(s => s.Text));
+                        var translated = false;
+                        foreach (var span in fs.Spans)
+                        {
+                            if (!string.IsNullOrEmpty(span.Text))
+                            {
+                                var t = Lng.Elem(span.Text);
+                                if (t != span.Text)
+                                {
+                                    originals.TryAdd(target, originalCombined);
+                                    span.Text = t;
+                                    translated = true;
+                                }
+                            }
+                        }
+                        return translated;
+                    }
                     return false;
                 }
 
