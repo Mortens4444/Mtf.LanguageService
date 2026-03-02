@@ -1,10 +1,10 @@
 ﻿namespace Mtf.LanguageService.MAUI.Views;
 
-public partial class NotifierPage : ContentPage
+public partial class NotifierTabbedPage : TabbedPage
 {
     private readonly PageNotifier notifier;
 
-    public NotifierPage(bool autoTranslate = true)
+    public NotifierTabbedPage(bool autoTranslate = true)
     {
         notifier = new PageNotifier(this, autoTranslate);
     }
