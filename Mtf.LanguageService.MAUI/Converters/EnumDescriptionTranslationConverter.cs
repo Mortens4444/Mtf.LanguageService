@@ -6,7 +6,7 @@ namespace Mtf.LanguageService.MAUI.Converters;
 
 public class EnumDescriptionTranslationConverter : IValueConverter
 {
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value == null)
         {
@@ -21,15 +21,27 @@ public class EnumDescriptionTranslationConverter : IValueConverter
             return Lng.Elem(name);
         }
 
-        var member = type.GetMember(name).FirstOrDefault();
-        if (member == null)
+        var isFlags = type.GetCustomAttribute<FlagsAttribute>() != null;
+
+        if (isFlags)
         {
-            return Lng.Elem(name);
+            var enumValues = Enum.GetValues(type).Cast<Enum>()
+                .Where(ev => ev.HasFlag((Enum)value))
+                .ToList();
+
+            var descriptions = enumValues.Select(ev =>
+            {
+                var member = type.GetMember(ev.ToString() ?? string.Empty).FirstOrDefault();
+                var descAttr = member?.GetCustomAttribute<DescriptionAttribute>();
+                return Lng.Elem(descAttr?.Description ?? ev.ToString() ?? string.Empty);
+            });
+
+            return String.Join(", ", descriptions);
         }
 
-        var descAttr = member.GetCustomAttribute<DescriptionAttribute>();
+        var member = type.GetMember(name).FirstOrDefault();
+        var descAttr = member?.GetCustomAttribute<DescriptionAttribute>();
         var description = descAttr?.Description ?? name;
-
         return Lng.Elem(description);
     }
 
