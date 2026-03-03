@@ -23,22 +23,44 @@ public class EnumDescriptionTranslationConverter : IValueConverter
 
         var isFlags = type.GetCustomAttribute<FlagsAttribute>() != null;
 
-        if (isFlags)
+        if (!isFlags)
         {
-            var enumValues = Enum.GetValues(type).Cast<Enum>()
-                .Where(ev => ev.HasFlag((Enum)value))
-                .ToList();
-
-            var descriptions = enumValues.Select(ev =>
-            {
-                var member = type.GetMember(ev.ToString() ?? string.Empty).FirstOrDefault();
-                var descAttr = member?.GetCustomAttribute<DescriptionAttribute>();
-                return Lng.Elem(descAttr?.Description ?? ev.ToString() ?? string.Empty);
-            });
-
-            return String.Join(", ", descriptions);
+            return TranslateSingle(type, name);
         }
 
+        var enumValue = (Enum)value;
+        var numericValue = System.Convert.ToUInt64(enumValue);
+
+        if (numericValue == 0)
+        {
+            return TranslateSingle(type, name);
+        }
+
+        var values = Enum.GetValues(type).Cast<Enum>();
+
+        var descriptions = values
+            .Where(ev =>
+            {
+                var flagValue = System.Convert.ToUInt64(ev);
+                if (flagValue == 0 || !IsPowerOfTwo(flagValue))
+                {
+                    return false;
+                }
+
+                return (numericValue & flagValue) == flagValue;
+            })
+            .Select(ev => TranslateSingle(type, ev.ToString() ?? String.Empty));
+
+        return String.Join(", ", descriptions);
+    }
+
+    private static bool IsPowerOfTwo(ulong value)
+    {
+        return (value & (value - 1)) == 0;
+    }
+
+    private static string TranslateSingle(Type type, string name)
+    {
         var member = type.GetMember(name).FirstOrDefault();
         var descAttr = member?.GetCustomAttribute<DescriptionAttribute>();
         var description = descAttr?.Description ?? name;
