@@ -22,45 +22,47 @@ public class EnumDescriptionTranslationConverter : IValueConverter
         }
 
         var isFlags = type.GetCustomAttribute<FlagsAttribute>() != null;
-
-        if (!isFlags)
+        if (isFlags)
         {
-            return TranslateSingle(type, name);
-        }
+            var numericValue = System.Convert.ToUInt64((Enum)value);
 
-        var enumValue = (Enum)value;
-        var numericValue = System.Convert.ToUInt64(enumValue);
-
-        if (numericValue == 0)
-        {
-            return TranslateSingle(type, name);
-        }
-
-        var values = Enum.GetValues(type).Cast<Enum>();
-
-        var descriptions = values
-            .Where(ev =>
+            if (numericValue == 0)
             {
-                var flagValue = System.Convert.ToUInt64(ev);
-                if (flagValue == 0 || !IsPowerOfTwo(flagValue))
+                // A 0 értékű enum tagot kezeljük (pl. None)
+                var member0 = type.GetMember(name).FirstOrDefault();
+                var descAttr0 = member0?.GetCustomAttribute<DescriptionAttribute>();
+                return Lng.Elem(descAttr0?.Description ?? name);
+            }
+
+            var descriptions = Enum.GetValues(type)
+                .Cast<Enum>()
+                .Where(ev =>
                 {
-                    return false;
-                }
+                    var flagValue = System.Convert.ToUInt64(ev);
+                    return flagValue != 0
+                        && (flagValue & (flagValue - 1)) == 0   // csak 2-hatvány (atomi) flagek
+                        && (numericValue & flagValue) == flagValue;
+                })
+                .Select(ev =>
+                {
+                    var member = type.GetMember(ev.ToString() ?? string.Empty).FirstOrDefault();
+                    var descAttr = member?.GetCustomAttribute<DescriptionAttribute>();
+                    return Lng.Elem(descAttr?.Description ?? ev.ToString() ?? string.Empty);
+                });
 
-                return (numericValue & flagValue) == flagValue;
-            })
-            .Select(ev => TranslateSingle(type, ev.ToString() ?? String.Empty));
+            //var enumValues = Enum.GetValues(type).Cast<Enum>()
+            //    .Where(ev => ev.HasFlag((Enum)value))
+            //    .ToList();
 
-        return String.Join(", ", descriptions);
-    }
+            //var descriptions = enumValues.Select(ev =>
+            //{
+            //    var member = type.GetMember(ev.ToString() ?? string.Empty).FirstOrDefault();
+            //    var descAttr = member?.GetCustomAttribute<DescriptionAttribute>();
+            //    return Lng.Elem(descAttr?.Description ?? ev.ToString() ?? string.Empty);
+            //});
+            return String.Join(", ", descriptions);
+        }
 
-    private static bool IsPowerOfTwo(ulong value)
-    {
-        return (value & (value - 1)) == 0;
-    }
-
-    private static string TranslateSingle(Type type, string name)
-    {
         var member = type.GetMember(name).FirstOrDefault();
         var descAttr = member?.GetCustomAttribute<DescriptionAttribute>();
         var description = descAttr?.Description ?? name;
