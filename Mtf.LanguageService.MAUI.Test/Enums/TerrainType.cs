@@ -7,108 +7,111 @@ public enum TerrainType : ulong
 {
     Unknown = 0,
 
-    Plains = 1 << 0,
+    Plains = 1UL << 0,
 
-    Snowfield = 1 << 1,
+    Snowfield = 1UL << 1,
 
-    Hills = 1 << 2,
+    Hills = 1UL << 2,
 
-    Mountains = 1 << 3,
+    Mountains = 1UL << 3,
 
-    Swamp = 1 << 4,
+    Swamp = 1UL << 4,
 
-    Desert = 1 << 5,
+    Desert = 1UL << 5,
 
-    Urban = 1 << 6,
+    Urban = 1UL << 6,
 
-    Water = 1 << 7,
+    Water = 1UL << 7,
 
-    Crevice = 1 << 8,
+    Crevice = 1UL << 8,
 
-    Tunnels = 1 << 9,
+    Tunnels = 1UL << 9,
 
-    Borderlands = 1 << 10,
+    Borderlands = 1UL << 10,
 
-    Riverbank = 1 << 11,
+    Riverbank = 1UL << 11,
 
-    Stronghold = 1 << 12,
+    Stronghold = 1UL << 12,
 
-    Cave = 1 << 13,
+    Cave = 1UL << 13,
 
-    Underground = 1 << 14,
+    Underground = 1UL << 14,
 
     [Description("Arctic forest")]
-    ArcticForest = 1 << 15,
+    ArcticForest = 1UL << 15,
 
     [Description("Temperate forest")]
-    TemperateForest = 1 << 16,
+    TemperateForest = 1UL << 16,
 
     [Description("Austral cold region")]
-    AustralColdRegion = 1 << 17,
+    AustralColdRegion = 1UL << 17,
 
     [Description("Tropical river")]
-    TropicalRiver = 1 << 18,
+    TropicalRiver = 1UL << 18,
 
     [Description("Tropical forest")]
-    TropicalForest = 1 << 19,
+    TropicalForest = 1UL << 19,
 
     [Description("Ice field")]
-    Icefield = 1 << 20,
+    Icefield = 1UL << 20,
 
     [Description("Abbit mines")]
-    AbbitMines = 1 << 21,
+    AbbitMines = 1UL << 21,
 
     [Description("Iron ore mines")]
-    IronOreMines = 1 << 22,
+    IronOreMines = 1UL << 22,
 
     [Description("Coal mines")]
-    CoalMines = 1 << 23,
+    CoalMines = 1UL << 23,
 
     [Description("Gold mines")]
-    GoldMines = 1 << 24,
+    GoldMines = 1UL << 24,
 
     [Description("Copper mines")]
-    CopperMines = 1 << 25,
+    CopperMines = 1UL << 25,
 
     [Description("Silver mines")]
-    SilverMines = 1 << 26,
+    SilverMines = 1UL << 26,
 
     [Description("Gemstone mines")]
-    GemstoneMines = 1 << 27,
+    GemstoneMines = 1UL << 27,
 
     [Description("Cursed Land")]
-    CursedLand = 1 << 28,
+    CursedLand = 1UL << 28,
 
     [Description("Inner Hall")]
-    InnerHall = 1 << 29,
+    InnerHall = 1UL << 29,
 
     [Description("Volcanic shaft")]
-    VolcanicShaft = 1 << 30,
+    VolcanicShaft = 1UL << 30,
 
     [Description("Subterranean river")]
     SubterraneanRiver = 1UL << 31,
 
     [Description("Inner chamber")]
-    InnerChamber = 1 << 32,
+    InnerChamber = 1UL << 32,
 
     [Description("Coastal barren")]
-    CoastalBarren = 1 << 33,
+    CoastalBarren = 1UL << 33,
 
     [Description("Coastal island")]
-    CoastalIsland = 1 << 34,
+    CoastalIsland = 1UL << 34,
 
     [Description("Old, dilapidated building")]
-    OldDilapidatedBuilding = 1 << 35,
+    OldDilapidatedBuilding = 1UL << 35,
 
     [Description("Tree hollow")]
-    TreeHollow = 1 << 36,
+    TreeHollow = 1UL << 36,
 
     [Description("Deep underground")]
     DeepUnderground = Underground | Cave | Crevice | InnerChamber | VolcanicShaft | SubterraneanRiver,
 
+    [Description("Forest")]
     Forest = ArcticForest | TemperateForest | TropicalForest,
 
+    [Description("Mines")]
     Mines = AbbitMines | IronOreMines | CoalMines | GoldMines | CopperMines | SilverMines | GemstoneMines,
 
+    [Description("Anywhere")]
     Anywhere = Plains | Forest | Hills | Mines | Mountains | Swamp | Desert | Urban | Water | OldDilapidatedBuilding | TreeHollow | AustralColdRegion | Snowfield | CursedLand | DeepUnderground
 }

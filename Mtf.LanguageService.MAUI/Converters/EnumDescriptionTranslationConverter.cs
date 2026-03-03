@@ -32,6 +32,15 @@ public class EnumDescriptionTranslationConverter : IValueConverter
             return TranslateSingle(type, name);
         }
 
+        var exactMatch = Enum.GetValues(type)
+            .Cast<Enum>()
+            .FirstOrDefault(ev => System.Convert.ToUInt64(ev) == numericValue);
+
+        if (exactMatch != null)
+        {
+            return TranslateSingle(type, exactMatch.ToString() ?? String.Empty);
+        }
+
         var values = Enum.GetValues(type).Cast<Enum>();
 
         var descriptions = values
@@ -45,9 +54,9 @@ public class EnumDescriptionTranslationConverter : IValueConverter
                 // benne van-e ez az atom-flag a numerikus értékben?
                 return (numericValue & flagValue) == flagValue;
             })
-            .Select(ev => TranslateSingle(type, ev.ToString() ?? string.Empty));
+            .Select(ev => TranslateSingle(type, ev.ToString() ?? String.Empty));
 
-        return string.Join(", ", descriptions);
+        return String.Join(", ", descriptions);
     }
 
     private static ulong UncheckedToUInt64(Enum ev)
