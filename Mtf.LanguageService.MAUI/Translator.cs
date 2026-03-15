@@ -32,6 +32,18 @@ namespace Mtf.LanguageService.MAUI
         }
 
         /// <summary>
+        /// Translates the given View and all of its descendants.
+        /// </summary>
+        public static Dictionary<object, string> Translate(View view)
+        {
+            ArgumentNullException.ThrowIfNull(view);
+
+            var originals = new Dictionary<object, string>();
+            TranslateElement(view, originals);
+            return originals;
+        }
+
+        /// <summary>
         /// Restores the original text values based on the dictionary previously returned by Translate.
         /// </summary>
         public static void SetOriginalTexts(Dictionary<object, string> originalTexts)
