@@ -8,12 +8,18 @@ public class EnumDescriptionTranslationConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value == null) return string.Empty;
+        if (value == null)
+        {
+            return string.Empty;
+        }
 
         var type = value.GetType();
         var name = value.ToString() ?? string.Empty;
 
-        if (!type.IsEnum) return Lng.Elem(name);
+        if (!type.IsEnum)
+        {
+            return Lng.Elem(name);
+        }
 
         var isFlags = type.GetCustomAttribute<FlagsAttribute>() != null;
         if (!isFlags)
