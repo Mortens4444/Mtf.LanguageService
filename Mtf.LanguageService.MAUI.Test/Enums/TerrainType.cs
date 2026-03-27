@@ -103,6 +103,8 @@ public enum TerrainType : ulong
     [Description("Tree hollow")]
     TreeHollow = 1UL << 36,
 
+    Order = 1UL << 37,
+
     [Description("Deep underground")]
     DeepUnderground = Underground | Cave | Crevice | InnerChamber | VolcanicShaft | SubterraneanRiver,
 

@@ -1,11 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:conv="clr-namespace:Mtf.LanguageService.MAUI.Converters;assembly=Mtf.LanguageService.MAUI"
              xmlns:mc="clr-namespace:Mtf.Maui.Controls;assembly=Mtf.Maui.Controls"
              x:Class="Mtf.LanguageService.MAUI.Test.MainPage"
              xmlns:v="clr-namespace:Mtf.LanguageService.MAUI.Test.Views"
              Title="Manage users">
-
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <conv:EnumDescriptionTranslationConverter x:Key="EnumDescriptionTranslationConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ScrollView>
         <VerticalStackLayout Padding="30,0" Spacing="25">
             <Label Text="Back" />
@@ -13,6 +18,11 @@
             <mc:MenuItem LabelText="Blind fighting" PageType="{x:Type v:QualificationDetailsPage}" WidthRequest="100" HeightRequest="100" />
 
             <Button Text="⟲" BackgroundColor="Orange" ToolTipProperties.Text="Clear all"/>
+
+            <Picker ItemsSource="{Binding AvailablePlaces}"
+                        ItemDisplayBinding="{Binding ., Converter={StaticResource EnumDescriptionTranslationConverter}}"
+                        SelectedItem="{Binding SelectedPlace}"
+                        WidthRequest="220"/>
         </VerticalStackLayout>
     </ScrollView>
 

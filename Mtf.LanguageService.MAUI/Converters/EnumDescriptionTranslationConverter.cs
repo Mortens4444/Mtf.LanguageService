@@ -10,11 +10,11 @@ public class EnumDescriptionTranslationConverter : IValueConverter
     {
         if (value == null)
         {
-            return string.Empty;
+            return String.Empty;
         }
 
         var type = value.GetType();
-        var name = value.ToString() ?? string.Empty;
+        var name = value.ToString() ?? String.Empty;
 
         if (!type.IsEnum)
         {
@@ -55,7 +55,10 @@ public class EnumDescriptionTranslationConverter : IValueConverter
                 var flagValue = UncheckedToUInt64(ev);
 
                 // kihagyjuk a 0-t és a nem "atomos" (összetett) értékeket
-                if (flagValue == 0 || !IsPowerOfTwo(flagValue)) return false;
+                if (flagValue == 0 || !IsPowerOfTwo(flagValue))
+                {
+                    return false;
+                }
 
                 // benne van-e ez az atom-flag a numerikus értékben?
                 return (numericValue & flagValue) == flagValue;
@@ -78,8 +81,13 @@ public class EnumDescriptionTranslationConverter : IValueConverter
     {
         var member = type.GetMember(name).FirstOrDefault();
         var descAttr = member?.GetCustomAttribute<DescriptionAttribute>();
-        var description = descAttr?.Description ?? name;
-        return Lng.Elem(description);
+
+        if (descAttr == null)
+        {
+            return name;
+        }
+
+        return Lng.Elem(descAttr.Description);
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => value;
