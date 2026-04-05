@@ -55,25 +55,31 @@ public sealed class PageNotifier(Page page, bool autoTranslate)
             }
         }
 
-        var title = Lng.Elem("Error");
+        var source = "Unknown";
+
+        if (finalException?.StackTrace != null)
+        {
+            var frame = new StackTrace(finalException, true).GetFrame(0);
+            var method = frame?.GetMethod();
+
+            var className = method?.DeclaringType?.Name ?? "N/A";
+            var methodName = method?.Name ?? "N/A";
+            var line = frame?.GetFileLineNumber();
+
+            source = line > 0
+                ? $"{className}.{methodName}:{line}"
+                : $"{className}.{methodName}";
+        }
+
+        var title = $"{Lng.Elem("Error")} - {source}";
+
         var displayMessage = Lng.Elem(finalException?.Message ?? message.Value ?? String.Empty);
 
 #if DEBUG
         if (finalException != null)
         {
-            var frame = new StackTrace(finalException, true).GetFrame(0);
-
-            var callingMethod = frame?.GetMethod()?.Name ?? "N/A";
-            var callingClass = frame?.GetMethod()?.DeclaringType?.FullName ?? "N/A";
-            var lineNumber = frame?.GetFileLineNumber() ?? 0;
-
-            title = $"{title} (DEBUG): {callingMethod}";
-
             displayMessage =
                 $"{displayMessage}\n\n----------------------------\n" +
-                $"Source Class: {callingClass}\n" +
-                $"Method: {callingMethod}\n" +
-                $"Line: {lineNumber}\n\n" +
                 $"Full Stack Trace:\n{finalException.StackTrace}";
         }
 #endif
