@@ -1,8 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using Mtf.Maui.Controls.Messages;
-#if DEBUG
 using System.Diagnostics;
-#endif
 
 namespace Mtf.LanguageService.MAUI.Views;
 
