@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using Mtf.LanguageService.Enums;
-using Mtf.LanguageService.Interfaces;
-using Mtf.LanguageService.Models;
+using Mtf.LanguageService.MAUI.Interfaces;
+using Mtf.LanguageService.MAUI.Models;
 using Mtf.LanguageService.Ods;
 using Mtf.Maui.Controls.Messages;
 using System.Data;

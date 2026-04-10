@@ -1,24 +1,18 @@
 ﻿using Mtf.LanguageService.Enums;
 
-namespace Mtf.LanguageService.Models
+namespace Mtf.LanguageService.MAUI.Models
 {
-    public class Translation
+    public class Translation(Language language, string elementIdentifier)
     {
-        public Language Language { get; private set; }
+        public Language Language { get; private set; } = language;
 
-        public string ElementIdentifier { get; private set; }
-
-        public Translation(Language language, string elementIdentifier)
-        {
-            Language = language;
-            ElementIdentifier = elementIdentifier;
-        }
+        public string ElementIdentifier { get; private set; } = elementIdentifier;
 
         public override bool Equals(object? obj)
         {
             if (obj is Translation translation)
             {
-                return translation.ElementIdentifier == ElementIdentifier && translation.Language == translation.Language;
+                return translation.ElementIdentifier == ElementIdentifier && translation.Language == Language;
             }
 
             return false;

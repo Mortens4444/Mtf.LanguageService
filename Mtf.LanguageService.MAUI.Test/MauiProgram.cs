@@ -13,6 +13,12 @@ namespace Mtf.LanguageService.MAUI.Test
             //var y = x.Convert(TerrainType.Order, typeof(string), null, CultureInfo.CurrentCulture)?.ToString() ?? String.Empty;
             //global::System.Console.WriteLine(y);
 
+            var result = Lng.Elem("Undead");
+            if (result != "Élőholtak")
+            {
+                throw new InvalidDataException("Translation is not correct");
+            }
+
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()

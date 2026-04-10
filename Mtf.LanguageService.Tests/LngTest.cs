@@ -12,6 +12,8 @@ namespace Mtf.LanguageService.Tests
             // Test translation to Hungarian
             Assert.AreEqual("Igen", Lng.Elem(Language.Hungarian, "Yes"));
             Assert.AreEqual("óra", Lng.Elem(Language.Hungarian, "hour"));
+            Assert.AreEqual("élőholtak", Lng.Elem(Language.Hungarian, "undead"));
+            Assert.AreEqual("Élőholtak", Lng.Elem(Language.Hungarian, "Undead"));
 
             // Test translation to German
             Assert.AreEqual("Ja", Lng.Elem(Language.German, "Yes"));

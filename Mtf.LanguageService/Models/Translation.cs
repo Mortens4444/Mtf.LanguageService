@@ -18,7 +18,7 @@ namespace Mtf.LanguageService.Models
         {
             if (obj is Translation translation)
             {
-                return translation.ElementIdentifier == ElementIdentifier && translation.Language == translation.Language;
+                return translation.ElementIdentifier == ElementIdentifier && translation.Language == Language;
             }
 
             return false;

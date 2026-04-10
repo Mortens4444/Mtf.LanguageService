@@ -1,6 +1,6 @@
-﻿using Mtf.LanguageService.Models;
+﻿using Mtf.LanguageService.MAUI.Models;
 
-namespace Mtf.LanguageService.Interfaces
+namespace Mtf.LanguageService.MAUI.Interfaces
 {
     public interface ILanguageElementLoader
     {
