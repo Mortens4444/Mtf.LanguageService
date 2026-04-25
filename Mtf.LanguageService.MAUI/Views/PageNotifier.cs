@@ -8,9 +8,15 @@ public sealed class PageNotifier(Page page, bool autoTranslate)
 {
     private readonly Page page = page;
     private readonly bool autoTranslate = autoTranslate;
+    private bool registered;
 
     public void Register()
     {
+        if (registered)
+        {
+            return;
+        }
+
         WeakReferenceMessenger.Default.Register<ShowPage>(page, (_, message) =>
             page.Dispatcher.Dispatch(() => _ = page.Navigation.PushAsync(message.Page)));
 
@@ -20,16 +26,28 @@ public sealed class PageNotifier(Page page, bool autoTranslate)
         WeakReferenceMessenger.Default.Register<ShowErrorMessage>(page, (_, message) =>
             page.Dispatcher.Dispatch(() => _ = DisplayError(message)));
 
+        registered = true;
+
         TryTranslate();
     }
 
     public void Unregister()
-        => WeakReferenceMessenger.Default.UnregisterAll(page);
+    {
+        if (!registered)
+        {
+            return;
+        }
+
+        WeakReferenceMessenger.Default.UnregisterAll(page);
+        registered = false;
+    }
 
     private void TryTranslate()
     {
         if (!autoTranslate)
+        {
             return;
+        }
 
         try
         {
