@@ -71,8 +71,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Mtf.LanguageService.Core\Mtf.LanguageService.Core.csproj" />
 	  <ProjectReference Include="..\Mtf.LanguageService.MAUI\Mtf.LanguageService.MAUI.csproj" />
+	  <ProjectReference Include="..\Mtf.LanguageService\Mtf.LanguageService.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

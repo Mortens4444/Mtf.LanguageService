@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Mtf.LanguageService.Core.Enums
+namespace Mtf.LanguageService.Enums
 {
     public enum Country
     {

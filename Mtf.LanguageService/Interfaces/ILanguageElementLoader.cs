@@ -1,8 +1,8 @@
-﻿using Mtf.LanguageService.Core.Models;
+﻿using Mtf.LanguageService.Models;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Mtf.LanguageService.Core.Interfaces
+namespace Mtf.LanguageService.Interfaces
 {
     public interface ILanguageElementLoader
     {

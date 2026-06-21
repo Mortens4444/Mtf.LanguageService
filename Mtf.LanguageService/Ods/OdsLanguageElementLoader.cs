@@ -1,13 +1,13 @@
-﻿using Mtf.LanguageService.Core.Enums;
-using Mtf.LanguageService.Core.Interfaces;
-using Mtf.LanguageService.Core.Models;
+﻿using Mtf.LanguageService.Enums;
+using Mtf.LanguageService.Interfaces;
+using Mtf.LanguageService.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
 
-namespace Mtf.LanguageService.Core.Ods
+namespace Mtf.LanguageService.Ods
 {
     public class OdsLanguageElementLoader : ILanguageElementLoader
     {

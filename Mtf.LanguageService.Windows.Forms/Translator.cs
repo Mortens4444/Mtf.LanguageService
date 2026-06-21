@@ -45,8 +45,10 @@ public static class Translator
     {
         ArgumentNullException.ThrowIfNull(userControl);
 
-        var originalTexts = new Dictionary<object, string>();
-        originalTexts.Add(userControl, userControl.Text);
+        var originalTexts = new Dictionary<object, string>
+        {
+            { userControl, userControl.Text }
+        };
         userControl.Text = Lng.Elem(userControl.Text);
         var originals = Translate(userControl.Controls, toolTip);
         foreach (var original in originals)

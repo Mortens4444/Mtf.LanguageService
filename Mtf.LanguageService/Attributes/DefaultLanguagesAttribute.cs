@@ -1,8 +1,8 @@
-﻿using Mtf.LanguageService.Core.Enums;
+﻿using Mtf.LanguageService.Enums;
 using System;
 using System.Collections.Generic;
 
-namespace Mtf.LanguageService.Core.Attributes
+namespace Mtf.LanguageService.Attributes
 {
     public class DefaultLanguagesAttribute : Attribute
     {

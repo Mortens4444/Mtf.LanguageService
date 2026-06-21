@@ -82,7 +82,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Mtf.LanguageService.Core\Mtf.LanguageService.Core.csproj" />
+    <ProjectReference Include="..\Mtf.LanguageService\Mtf.LanguageService.csproj" />
   </ItemGroup>
   
 </Project>

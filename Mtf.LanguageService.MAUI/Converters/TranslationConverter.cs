@@ -53,7 +53,7 @@ public class TranslationConverter : IValueConverter
             string englishText;
             try
             {
-                englishText = Lng.Elem(Core.Enums.Language.English, key) ?? key;
+                englishText = Lng.Elem(Enums.Language.English, key) ?? key;
             }
             catch
             {

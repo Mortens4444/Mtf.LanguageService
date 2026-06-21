@@ -1,6 +1,6 @@
-﻿using Mtf.LanguageService.Core.Enums;
-using Mtf.LanguageService.Core.Models;
-using Mtf.LanguageService.Core.Ods;
+﻿using Mtf.LanguageService.Enums;
+using Mtf.LanguageService.Models;
+using Mtf.LanguageService.Ods;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

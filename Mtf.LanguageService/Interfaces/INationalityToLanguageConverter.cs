@@ -1,6 +1,6 @@
-﻿using Mtf.LanguageService.Core.Enums;
+﻿using Mtf.LanguageService.Enums;
 
-namespace Mtf.LanguageService.Core.Interfaces
+namespace Mtf.LanguageService.Interfaces
 {
     public interface INationalityToLanguageConverter
     {

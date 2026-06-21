@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 
-namespace Mtf.LanguageService.Core.Extensions
+namespace Mtf.LanguageService.Extensions
 {
     public static class LanguageExtensions
     {

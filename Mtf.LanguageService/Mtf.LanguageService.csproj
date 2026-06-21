@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFrameworks>net10.0;net9.0;net8.0;netstandard2.1</TargetFrameworks>
-    <!--<TargetFrameworks>net10.0;net9.0;net8.0;net481;net462;netstandard2.1</TargetFrameworks>-->
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
     <OutputType>Library</OutputType>
@@ -26,7 +25,7 @@
   </PropertyGroup>
   
   <PropertyGroup>
-    <Version>1.0.218</Version>
+    <Version>1.0.219</Version>
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <FileVersion>$(Version)</FileVersion>
     <InformationalVersion>$(Version)</InformationalVersion>
@@ -45,10 +44,6 @@
 
   <ItemGroup>
     <PackageReference Include="Mtf.Extensions" Version="1.0.31" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Mtf.LanguageService.Core\Mtf.LanguageService.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

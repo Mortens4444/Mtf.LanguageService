@@ -1,6 +1,6 @@
-﻿using Mtf.LanguageService.Core.Enums;
+﻿using Mtf.LanguageService.Enums;
 
-namespace Mtf.LanguageService.Core.Models
+namespace Mtf.LanguageService.Models
 {
     public class Translation
     {

@@ -1,12 +1,12 @@
 ﻿using Mtf.Extensions;
-using Mtf.LanguageService.Core.Attributes;
-using Mtf.LanguageService.Core.Enums;
-using Mtf.LanguageService.Core.Interfaces;
+using Mtf.LanguageService.Attributes;
+using Mtf.LanguageService.Enums;
+using Mtf.LanguageService.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Mtf.LanguageService.Core.Converters
+namespace Mtf.LanguageService.Converters
 {
     public class NationalityToLanguageConverter : INationalityToLanguageConverter
     {

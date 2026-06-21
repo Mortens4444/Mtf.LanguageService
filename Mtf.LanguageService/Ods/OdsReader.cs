@@ -8,7 +8,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Xml;
 
-namespace Mtf.LanguageService.Core.Ods
+namespace Mtf.LanguageService.Ods
 {
     public class OdsReader
     {

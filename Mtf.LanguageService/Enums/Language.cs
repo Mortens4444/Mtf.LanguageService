@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Mtf.LanguageService.Core.Enums
+namespace Mtf.LanguageService.Enums
 {
     /// <summary>
     /// The AllLanguages.csv file must have a column with this language name

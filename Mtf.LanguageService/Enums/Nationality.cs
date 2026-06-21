@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
-using Mtf.LanguageService.Core.Attributes;
+using Mtf.LanguageService.Attributes;
 
-namespace Mtf.LanguageService.Core.Enums
+namespace Mtf.LanguageService.Enums
 {
     public enum Nationality
     {
