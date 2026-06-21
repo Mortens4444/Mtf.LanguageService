@@ -1,48 +1,66 @@
-﻿using Microsoft.Maui;
-using Microsoft.Maui.Controls;
+﻿using Microsoft.AspNetCore.Components;
 using Mtf.LanguageService.Core;
 using System.Collections;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-namespace Mtf.LanguageService.MAUI
+namespace Mtf.LanguageService.MAUI.Blazor
 {
     public static class Translator
     {
         private static readonly ConditionalWeakTable<object, string> PropertyMap = new();
         private static readonly string[] CommonProperties = new[] { "Text", "Title", "Header", "Placeholder", "Label", "Content", "Caption", "Description", "HeaderText", "LabelText", "ButtonText", "TitleText" };
-        /// <summary>
-        /// Translates the given Page and all of its descendants.  
-        /// Returns a dictionary that contains each object and its original text value.
-        /// </summary>
-        /// <param name="page">The Page to translate.</param>
-        /// <returns>
-        /// A dictionary where the key is the object and the value is its original text.
-        /// </returns>
-        /// <remarks>
-        /// WARNING: This process may break existing data bindings.  
-        /// It modifies string-based UI properties directly, which can override or detach bindings
-        /// applied to those properties.
-        /// </remarks>
-        public static Dictionary<object, string> Translate(Page page)
+
+        public static Dictionary<object, string> Translate(ComponentBase component)
         {
-            ArgumentNullException.ThrowIfNull(page);
+            ArgumentNullException.ThrowIfNull(component);
 
             var originals = new Dictionary<object, string>();
-            TranslateElement(page, originals);
-            TryTranslateToolbarItems(page, originals);
-            return originals;
-        }
 
-        /// <summary>
-        /// Translates the given View and all of its descendants.
-        /// </summary>
-        public static Dictionary<object, string> Translate(View view)
-        {
-            ArgumentNullException.ThrowIfNull(view);
+            var properties = component.GetType()
+                .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
-            var originals = new Dictionary<object, string>();
-            TranslateElement(view, originals);
+            foreach (var property in properties)
+            {
+                if (property.PropertyType != typeof(string) || !property.CanRead || !property.CanWrite)
+                {
+                    continue;
+                }
+
+                try
+                {
+                    var value = property.GetValue(component) as string;
+
+                    if (String.IsNullOrWhiteSpace(value))
+                    {
+                        continue;
+                    }
+
+                    var translated = Lng.Elem(value);
+
+                    if (translated == value)
+                    {
+                        continue;
+                    }
+
+                    originals.TryAdd(component, value);
+
+                    try
+                    {
+                        PropertyMap.Remove(component);
+                    }
+                    catch
+                    {
+                    }
+
+                    PropertyMap.Add(component, property.Name);
+                    property.SetValue(component, translated);
+                }
+                catch
+                {
+                }
+            }
+
             return originals;
         }
 

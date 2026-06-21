@@ -30,7 +30,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.30" />
+    <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.71" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -52,8 +52,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.102" PrivateAssets="All" />
-    <PackageReference Include="Mtf.Extensions" Version="1.0.26" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.300" PrivateAssets="All" />
+    <PackageReference Include="Mtf.Extensions" Version="1.0.31" />
     <PackageReference Include="Mtf.Maui.Controls" Version="4.0.63" />
   </ItemGroup>
 
@@ -79,6 +79,10 @@
     <Folder Include="Platforms\Android\" />
     <Folder Include="Platforms\MacCatalyst\" />
     <Folder Include="Platforms\Windows\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Mtf.LanguageService.Core\Mtf.LanguageService.Core.csproj" />
   </ItemGroup>
   
 </Project>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.12.35417.141
+# Visual Studio Version 18
+VisualStudioVersion = 18.7.11911.148 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mtf.LanguageService", "Mtf.LanguageService\Mtf.LanguageService.csproj", "{865F195B-CD55-4C76-A0FE-DB82409359CC}"
 EndProject
@@ -23,6 +23,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mtf.LanguageService.MAUI", "Mtf.LanguageService.MAUI\Mtf.LanguageService.MAUI.csproj", "{63C23469-FA37-416B-B12D-2701C1C5FE38}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mtf.LanguageService.MAUI.Test", "Mtf.LanguageService.MAUI.Test\Mtf.LanguageService.MAUI.Test.csproj", "{03A08884-4E66-4254-A7BF-AF6707544344}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mtf.LanguageService.Core", "Mtf.LanguageService.Core\Mtf.LanguageService.Core.csproj", "{C8D2975D-FDCD-480D-BF01-9DE452D90786}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mtf.LanguageService.MAUI.Blazor", "Mtf.LanguageService.MAUI.Blazor\Mtf.LanguageService.MAUI.Blazor.csproj", "{A44B10D9-A79B-4AF6-98C7-50D35595125E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +67,14 @@ Global
 		{03A08884-4E66-4254-A7BF-AF6707544344}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03A08884-4E66-4254-A7BF-AF6707544344}.Release|Any CPU.Build.0 = Release|Any CPU
 		{03A08884-4E66-4254-A7BF-AF6707544344}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{C8D2975D-FDCD-480D-BF01-9DE452D90786}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8D2975D-FDCD-480D-BF01-9DE452D90786}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8D2975D-FDCD-480D-BF01-9DE452D90786}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8D2975D-FDCD-480D-BF01-9DE452D90786}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A44B10D9-A79B-4AF6-98C7-50D35595125E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A44B10D9-A79B-4AF6-98C7-50D35595125E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A44B10D9-A79B-4AF6-98C7-50D35595125E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A44B10D9-A79B-4AF6-98C7-50D35595125E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

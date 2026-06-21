@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using Mtf.LanguageService.Core;
+using System.Globalization;
 using System.Text;
 
 namespace Mtf.LanguageService.MAUI.Converters;
@@ -52,7 +53,7 @@ public class TranslationConverter : IValueConverter
             string englishText;
             try
             {
-                englishText = Lng.Elem(Enums.Language.English, key) ?? key;
+                englishText = Lng.Elem(Core.Enums.Language.English, key) ?? key;
             }
             catch
             {
@@ -92,7 +93,7 @@ public class TranslationConverter : IValueConverter
             else
             {
                 result.Append(Char.ToUpperInvariant(word[0]));
-                result.Append(word.Substring(1).ToLowerInvariant());
+                result.Append(word[1..].ToLowerInvariant());
             }
         }
 

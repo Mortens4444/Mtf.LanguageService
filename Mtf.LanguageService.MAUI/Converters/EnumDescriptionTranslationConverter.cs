@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Mtf.LanguageService.Core;
+using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
 
