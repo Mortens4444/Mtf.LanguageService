@@ -1,6 +1,4 @@
-﻿using Microsoft.Maui;
-using Microsoft.Maui.Controls;
-using Mtf.LanguageService.Core;
+﻿using Mtf.LanguageService.Core;
 using System.Collections;
 using System.Reflection;
 using System.Runtime.CompilerServices;
