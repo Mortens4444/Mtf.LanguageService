@@ -183,11 +183,3 @@ Lng.Translate(Language.Hungarian, "Ismétlődés", Language.English);
 
 4. **Conditional Compilation:**  
    - `MenuItemCollection` translation is only available for .NET Framework.  
-
----
-
-**Links**
-
-[GitHub URL](https://github.com/Mortens4444/LanguageService)
-[Developer's URL](http://w3.hdsnet.hu/mortens/)
-[Facebook Page](https://www.facebook.com/developersdream)

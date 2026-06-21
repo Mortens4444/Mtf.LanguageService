@@ -140,9 +140,3 @@ Lng.Translate(Language.Hungarian, "Ismétlődés", Language.English);
 
 4. **Performance:**  
    - Efficient traversal of visual and logical trees ensures minimal overhead.
-
-**Links**
-
-[GitHub URL](https://github.com/Mortens4444/LanguageService)
-[Developer's URL](http://w3.hdsnet.hu/mortens/)
-[Facebook Page](https://www.facebook.com/developersdream)
