@@ -68,6 +68,7 @@
     <ProjectReference Include="..\Mtf.LanguageService\Mtf.LanguageService.csproj">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>all</IncludeAssets>
+      <IncludeBuildOutput>true</IncludeBuildOutput>
     </ProjectReference>
   </ItemGroup>
 
