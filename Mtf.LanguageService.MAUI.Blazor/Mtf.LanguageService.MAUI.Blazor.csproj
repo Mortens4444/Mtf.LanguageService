@@ -58,7 +58,7 @@
 	</ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Mtf.LanguageService\Mtf.LanguageService.csproj" />
+    <ProjectReference Include="..\Mtf.LanguageService\Mtf.LanguageService.csproj" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>
