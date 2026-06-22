@@ -42,8 +42,17 @@
     <None Include="..\LICENSE.txt" Pack="true" PackagePath="" />
     <EmbeddedResource Include="..\Mtf.LanguageService\Languages.ods" Pack="true" PackagePath="buildTransitive\" CopyToOutputDirectory="Always" />
     <None Include="Mtf.MAUI.Blazor.LanguageService.targets" Pack="true" PackagePath="buildTransitive\" />
+    <Content Include="bin\Release\net462\Mtf.LanguageService.dll" Pack="true" PackagePath="lib\net462" />
+    <Content Include="bin\Release\net481\Mtf.LanguageService.dll" Pack="true" PackagePath="lib\net481" />
+    <Content Include="bin\Release\net8.0-windows\Mtf.LanguageService.dll" Pack="true" PackagePath="lib\net8.0-windows7.0" />
+    <Content Include="bin\Release\net9.0-windows\Mtf.LanguageService.dll" Pack="true" PackagePath="lib\net9.0-windows7.0" />
+    <Content Include="bin\Release\net10.0-windows\Mtf.LanguageService.dll" Pack="true" PackagePath="lib\net10.0-windows7.0" />
+    <Content Include="bin\Release\net462\Mtf.LanguageService.pdb" Pack="true" PackagePath="lib\net462" />
+    <Content Include="bin\Release\net481\Mtf.LanguageService.pdb" Pack="true" PackagePath="lib\net481" />
+    <Content Include="bin\Release\net8.0-windows\Mtf.LanguageService.pdb" Pack="true" PackagePath="lib\net8.0-windows7.0" />
+    <Content Include="bin\Release\net9.0-windows\Mtf.LanguageService.pdb" Pack="true" PackagePath="lib\net9.0-windows7.0" />
+    <Content Include="bin\Release\net10.0-windows\Mtf.LanguageService.pdb" Pack="true" PackagePath="lib\net10.0-windows7.0" />
   </ItemGroup>
-
   <PropertyGroup>
     <Version>1.0.9</Version>
     <AssemblyVersion>$(Version)</AssemblyVersion>

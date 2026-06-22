@@ -44,13 +44,24 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>Lng Translator Language MAUI Mortens</PackageTags>
   </PropertyGroup>
+
   <ItemGroup>
     <None Include=".\ReadMe.md" Pack="true" PackagePath="" />
     <None Include="..\LICENSE.txt" Pack="true" PackagePath="" />
     <EmbeddedResource Include="..\Mtf.LanguageService\Languages.ods" Pack="true" PackagePath="buildTransitive\" CopyToOutputDirectory="Always" />
     <None Include="Mtf.MAUI.LanguageService.targets" Pack="true" PackagePath="buildTransitive\" />
+    <Content Include="bin\Release\net462\Mtf.LanguageService.dll" Pack="true" PackagePath="lib\net462" />
+    <Content Include="bin\Release\net481\Mtf.LanguageService.dll" Pack="true" PackagePath="lib\net481" />
+    <Content Include="bin\Release\net8.0-windows\Mtf.LanguageService.dll" Pack="true" PackagePath="lib\net8.0-windows7.0" />
+    <Content Include="bin\Release\net9.0-windows\Mtf.LanguageService.dll" Pack="true" PackagePath="lib\net9.0-windows7.0" />
+    <Content Include="bin\Release\net10.0-windows\Mtf.LanguageService.dll" Pack="true" PackagePath="lib\net10.0-windows7.0" />
+    <Content Include="bin\Release\net462\Mtf.LanguageService.pdb" Pack="true" PackagePath="lib\net462" />
+    <Content Include="bin\Release\net481\Mtf.LanguageService.pdb" Pack="true" PackagePath="lib\net481" />
+    <Content Include="bin\Release\net8.0-windows\Mtf.LanguageService.pdb" Pack="true" PackagePath="lib\net8.0-windows7.0" />
+    <Content Include="bin\Release\net9.0-windows\Mtf.LanguageService.pdb" Pack="true" PackagePath="lib\net9.0-windows7.0" />
+    <Content Include="bin\Release\net10.0-windows\Mtf.LanguageService.pdb" Pack="true" PackagePath="lib\net10.0-windows7.0" />
   </ItemGroup>
-
+  
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.300" PrivateAssets="All" />
     <PackageReference Include="Mtf.Extensions" Version="1.0.31" />
@@ -58,7 +69,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <Version>3.0.77</Version>
+    <Version>3.0.78</Version>
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <FileVersion>$(Version)</FileVersion>
     <InformationalVersion>$(Version)</InformationalVersion>
