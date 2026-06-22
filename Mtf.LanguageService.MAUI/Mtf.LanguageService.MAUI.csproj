@@ -50,8 +50,8 @@
     <None Include="..\LICENSE.txt" Pack="true" PackagePath="" />
     <EmbeddedResource Include="..\Mtf.LanguageService\Languages.ods" Pack="true" PackagePath="buildTransitive\" CopyToOutputDirectory="Always" />
     <None Include="Mtf.MAUI.LanguageService.targets" Pack="true" PackagePath="buildTransitive\" />
-    <Content Include="bin\Release\net10.0-windows10.0.19041.0\Mtf.LanguageService.dll" Pack="true" PackagePath="lib\net10.0-windows10.0.19041.0" />
-    <Content Include="bin\Release\net10.0-windows10.0.19041.0\Mtf.LanguageService.pdb" Pack="true" PackagePath="lib\net10.0-windows10.0.19041.0" />
+    <Content Include="bin\Release\net10.0-windows10.0.19041\Mtf.LanguageService.dll" Pack="true" PackagePath="lib\net10.0-windows10.0.19041.0" />
+    <Content Include="bin\Release\net10.0-windows10.0.19041\Mtf.LanguageService.pdb" Pack="true" PackagePath="lib\net10.0-windows10.0.19041.0" />
   </ItemGroup>
   
   <ItemGroup>
@@ -61,7 +61,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <Version>3.0.80</Version>
+    <Version>3.0.81</Version>
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <FileVersion>$(Version)</FileVersion>
     <InformationalVersion>$(Version)</InformationalVersion>
