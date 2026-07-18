@@ -1,5 +1,4 @@
-﻿using Microsoft.Maui.Controls;
-using Mtf.Extensions;
+﻿using Mtf.Extensions;
 using Mtf.LanguageService.Core;
 using Mtf.LanguageService.Enums;
 using Mtf.LanguageService.MAUI.Test.Enums;
