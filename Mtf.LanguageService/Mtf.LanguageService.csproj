@@ -25,7 +25,7 @@
   </PropertyGroup>
   
   <PropertyGroup>
-    <Version>1.0.251</Version>
+    <Version>1.0.252</Version>
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <FileVersion>$(Version)</FileVersion>
     <InformationalVersion>$(Version)</InformationalVersion>
