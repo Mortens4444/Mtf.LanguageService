@@ -8,7 +8,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 
-namespace Mtf.LanguageService.Core
+namespace Mtf.LanguageService
 {
     public static class Lng
     {

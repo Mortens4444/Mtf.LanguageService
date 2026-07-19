@@ -1,5 +1,4 @@
-﻿using Mtf.LanguageService.Core;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Media;
 

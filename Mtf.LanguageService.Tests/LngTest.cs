@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Mtf.LanguageService.Core;
 using Mtf.LanguageService.Enums;
 
 namespace Mtf.LanguageService.Tests

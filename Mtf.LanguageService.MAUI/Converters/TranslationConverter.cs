@@ -1,5 +1,4 @@
-﻿using Mtf.LanguageService.Core;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text;
 
 namespace Mtf.LanguageService.MAUI.Converters;

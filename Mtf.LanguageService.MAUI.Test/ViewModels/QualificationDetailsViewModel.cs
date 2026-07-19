@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using M.A.G.U.S.Qualifications;
 using M.A.G.U.S.Qualifications.Combat;
-using Mtf.LanguageService.Core;
 using Mtf.LanguageService.MAUI.Test.Enums;
 
 namespace Mtf.LanguageService.MAUI.Test.ViewModels;
