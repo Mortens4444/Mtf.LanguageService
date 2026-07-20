@@ -25,7 +25,7 @@
   </PropertyGroup>
   
   <PropertyGroup>
-    <Version>1.0.263</Version>
+    <Version>1.0.265</Version>
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <FileVersion>$(Version)</FileVersion>
     <InformationalVersion>$(Version)</InformationalVersion>
@@ -47,6 +47,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Languages.ods" />
     <None Update="Languages.ods">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
