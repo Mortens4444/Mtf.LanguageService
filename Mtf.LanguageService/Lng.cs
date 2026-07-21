@@ -16,6 +16,8 @@ namespace Mtf.LanguageService
 
         public static Language DefaultLanguage;
 
+        public static bool IsRtl = DefaultLanguage == Language.Arabic || DefaultLanguage == Language.Hebrew;
+
         public static readonly Dictionary<Translation, List<string>> AllLanguageElements;
 
         private static readonly OdsLanguageElementLoader languageElementLoader = new OdsLanguageElementLoader();
@@ -29,16 +31,12 @@ namespace Mtf.LanguageService
                 var asm = typeof(Lng).Assembly;
                 var names = asm.GetManifestResourceNames();
 
-                var resourceName = names
-                    .FirstOrDefault(n => n.EndsWith(LanguageFile, StringComparison.OrdinalIgnoreCase) || n.IndexOf("Languages.ods", StringComparison.OrdinalIgnoreCase) >= 0);
-
+                var resourceName = names.FirstOrDefault(n => n.EndsWith(LanguageFile, StringComparison.OrdinalIgnoreCase) || n.Contains("Languages.ods", StringComparison.OrdinalIgnoreCase));
                 if (resourceName != null)
                 {
-                    using (var stream = asm.GetManifestResourceStream(resourceName) ?? throw new InvalidOperationException($"Resource {resourceName} found but stream is null."))
-                    {
-                        AllLanguageElements = languageElementLoader.LoadElements(stream);
-                        return;
-                    }
+                    using var stream = asm.GetManifestResourceStream(resourceName) ?? throw new InvalidOperationException($"Resource {resourceName} found but stream is null.");
+                    AllLanguageElements = languageElementLoader.LoadElements(stream);
+                    return;
                 }
 
                 var languageFiles = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, LanguageFile);

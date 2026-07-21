@@ -10,8 +10,10 @@ public partial class MainPage : ContentPage
     public MainPage()
     {
         InitializeComponent();
-        Lng.DefaultLanguage = Language.Hungarian;
+        Lng.DefaultLanguage = Language.Arabic;
         Translator.Translate(this);
+        FlowDirection = Lng.IsRtl ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
+        FlowDirection = FlowDirection.RightToLeft;
         LoadAvailablePlaces();
     }
 

@@ -15,7 +15,9 @@ namespace Mtf.LanguageService.WPF.Test
             lv.ItemsSource = new[] { Lng.Elem("Users"), Lng.Elem("Groups") };
             rtb.Document.Blocks.Add(new Paragraph(new Run(Lng.Elem("File name"))));
 
+            Lng.DefaultLanguage = Enums.Language.Arabic;
             Translator.Translate(this);
+            FlowDirection = Lng.IsRtl ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
         }
     }
 }
