@@ -14,17 +14,19 @@ namespace Mtf.LanguageService
     {
         private const string LanguageFile = "Languages.ods";
 
+        private static Language defaultLanguage = Language.English;
+
         public static Language DefaultLanguage
         {
             get
             {
-                return Language.English;
+                return defaultLanguage;
             }
             set
             {
-                if (DefaultLanguage != value)
+                if (defaultLanguage != value)
                 {
-                    DefaultLanguage = value;
+                    defaultLanguage = value;
                     LanguageChanged?.Invoke();
                 }
             }
