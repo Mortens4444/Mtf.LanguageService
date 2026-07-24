@@ -14,13 +14,29 @@ namespace Mtf.LanguageService
     {
         private const string LanguageFile = "Languages.ods";
 
-        public static Language DefaultLanguage;
+        public static Language DefaultLanguage
+        {
+            get
+            {
+                return Language.English;
+            }
+            set
+            {
+                if (DefaultLanguage != value)
+                {
+                    DefaultLanguage = value;
+                    LanguageChanged?.Invoke();
+                }
+            }
+        }
 
-        public static bool IsRtl = DefaultLanguage == Language.Arabic || DefaultLanguage == Language.Hebrew;
+        public static bool IsRtl => DefaultLanguage == Language.Arabic || DefaultLanguage == Language.Hebrew;
 
         public static readonly Dictionary<Translation, List<string>> AllLanguageElements;
 
         private static readonly OdsLanguageElementLoader languageElementLoader = new OdsLanguageElementLoader();
+
+        public static event Action? LanguageChanged;
 
         static Lng()
         {
