@@ -72,7 +72,7 @@
 	<ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.301" PrivateAssets="All" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="10.0.10" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.80" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.90" />
 	</ItemGroup>
 
   <ItemGroup>
