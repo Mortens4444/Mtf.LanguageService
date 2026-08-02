@@ -25,7 +25,7 @@
   </PropertyGroup>
   
   <PropertyGroup>
-    <Version>1.0.274</Version>
+    <Version>1.0.275</Version>
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <FileVersion>$(Version)</FileVersion>
     <InformationalVersion>$(Version)</InformationalVersion>
@@ -43,7 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mtf.Extensions" Version="1.0.31" />
+    <PackageReference Include="Mtf.Extensions" Version="1.0.33" />
   </ItemGroup>
 
   <ItemGroup>
