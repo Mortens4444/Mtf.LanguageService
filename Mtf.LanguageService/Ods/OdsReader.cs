@@ -43,6 +43,34 @@ namespace Mtf.LanguageService.Ods
             new XmlNamespace("config", "urn:oasis:names:tc:opendocument:xmlns:config:1.0")
         };
 
+        public DataSet ReadFile(Stream stream)
+        {
+            if (stream == null) throw new ArgumentNullException(nameof(stream));
+
+            // Note: do not dispose the incoming stream (caller may manage it). Use leaveOpen: true.
+            using (var zipArchive = new ZipArchive(stream, ZipArchiveMode.Read, leaveOpen: true))
+            {
+                var entry = zipArchive.GetEntry("content.xml");
+                if (entry == null) throw new FileNotFoundException("content.xml not found inside ODS archive");
+
+                var contentXml = new XmlDocument();
+                using (var entryStream = entry.Open())
+                {
+                    contentXml.Load(entryStream);
+                }
+
+                var xmlNamespaceManager = contentXml.InitializeXmlNamespaceManager(Namespaces);
+                var odsFile = new DataSet("embedded.ods");
+                var xmlNodeList = contentXml.SelectNodes("/office:document-content/office:body/office:spreadsheet/table:table", xmlNamespaceManager);
+                foreach (XmlNode tableNode in xmlNodeList)
+                {
+                    odsFile.Tables.Add(GetSheet(tableNode, xmlNamespaceManager));
+                }
+
+                return odsFile;
+            }
+        }
+
         public DataSet ReadFile(string filePath)
         {
             using (var zipArchive = ZipFile.OpenRead(filePath))

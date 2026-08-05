@@ -46,7 +46,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include=".\ReadMe.md" Pack="true" PackagePath="" />
     <None Include="..\LICENSE.txt" Pack="true" PackagePath="" />
     <EmbeddedResource Include="..\Mtf.LanguageService\Languages.ods" Pack="true" PackagePath="buildTransitive\" CopyToOutputDirectory="Always" />
     <None Include="Mtf.MAUI.LanguageService.targets" Pack="true" PackagePath="buildTransitive\" />

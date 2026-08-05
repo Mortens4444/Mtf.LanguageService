@@ -34,43 +34,38 @@ namespace Mtf.LanguageService
 
         public static bool IsRtl => DefaultLanguage == Language.Arabic || DefaultLanguage == Language.Hebrew;
 
-        public static readonly Dictionary<Translation, List<string>> AllLanguageElements;
-
         private static readonly OdsLanguageElementLoader languageElementLoader = new OdsLanguageElementLoader();
+
+        private static readonly Lazy<Dictionary<Translation, List<string>>> _allLanguageElementsLazy = new Lazy<Dictionary<Translation, List<string>>>(() =>
+        {
+            // Deferred load: load from embedded resource first, otherwise from file system.
+            var asm = typeof(Lng).Assembly;
+            var names = asm.GetManifestResourceNames();
+
+            var resourceName = names.FirstOrDefault(n => n.EndsWith(LanguageFile, StringComparison.OrdinalIgnoreCase) || n.Contains("Languages.ods", StringComparison.OrdinalIgnoreCase));
+            if (resourceName != null)
+            {
+                using var stream = asm.GetManifestResourceStream(resourceName) ?? throw new InvalidOperationException($"Resource {resourceName} found but stream is null.");
+                return languageElementLoader.LoadElements(stream);
+            }
+
+            var languageFiles = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, LanguageFile);
+            if (languageFiles.Length != 0)
+            {
+                return languageElementLoader.LoadElements(languageFiles.First());
+            }
+
+            throw new InvalidOperationException($"Cannot find {LanguageFile} file as embedded resource or in directory {AppDomain.CurrentDomain.BaseDirectory}.");
+        }, isThreadSafe: true);
+
+        public static Dictionary<Translation, List<string>> AllLanguageElements => _allLanguageElementsLazy.Value;
 
         public static event Action? LanguageChanged;
 
         static Lng()
         {
+            // Only set default language during type init; defer heavy file parsing until needed via AllLanguageElements property.
             SetDefaultLanguage();
-
-            try
-            {
-                var asm = typeof(Lng).Assembly;
-                var names = asm.GetManifestResourceNames();
-
-                var resourceName = names.FirstOrDefault(n => n.EndsWith(LanguageFile, StringComparison.OrdinalIgnoreCase) || n.Contains("Languages.ods", StringComparison.OrdinalIgnoreCase));
-                if (resourceName != null)
-                {
-                    using var stream = asm.GetManifestResourceStream(resourceName) ?? throw new InvalidOperationException($"Resource {resourceName} found but stream is null.");
-                    AllLanguageElements = languageElementLoader.LoadElements(stream);
-                    return;
-                }
-
-                var languageFiles = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, LanguageFile);
-                if (languageFiles.Length != 0)
-                {
-                    AllLanguageElements = languageElementLoader.LoadElements(languageFiles.First());
-                    return;
-                }
-
-                throw new InvalidOperationException($"Cannot find {LanguageFile} file as embedded resource or in directory {AppDomain.CurrentDomain.BaseDirectory}.");
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Lng static init failed: " + ex);
-                throw;
-            }
         }
 
         private static void SetDefaultLanguage()

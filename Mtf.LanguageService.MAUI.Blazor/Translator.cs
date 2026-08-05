@@ -7,8 +7,38 @@ namespace Mtf.LanguageService.MAUI.Blazor
 {
     public static class Translator
     {
-        private static readonly ConditionalWeakTable<object, string> PropertyMap = new();
+        private static readonly ConditionalWeakTable<object, List<string>> PropertyMap = new();
         private static readonly string[] CommonProperties = new[] { "Text", "Title", "Header", "Placeholder", "Label", "Content", "Caption", "Description", "HeaderText", "LabelText", "ButtonText", "TitleText" };
+
+        private const char RecordSep = '\u001E';
+        private const char UnitSep = '\u001F';
+
+        private static void AddOriginal(IDictionary<object, string> originals, object target, string propertyName, string originalValue)
+        {
+            if (originals == null || target == null || propertyName == null) return;
+            var entry = propertyName + UnitSep + (originalValue ?? string.Empty);
+            if (originals.TryGetValue(target, out var existing))
+            {
+                originals[target] = existing + RecordSep + entry;
+            }
+            else
+            {
+                originals[target] = entry;
+            }
+
+        }
+
+        private static IEnumerable<KeyValuePair<string,string>> ParseOriginalEntries(string packed)
+        {
+            if (string.IsNullOrEmpty(packed)) yield break;
+            var entries = packed.Split(RecordSep);
+            foreach (var e in entries)
+            {
+                var parts = e.Split(UnitSep, 2);
+                if (parts.Length == 2)
+                    yield return new KeyValuePair<string,string>(parts[0], parts[1]);
+            }
+        }
 
         public static Dictionary<object, string> Translate(ComponentBase component)
         {
@@ -42,17 +72,21 @@ namespace Mtf.LanguageService.MAUI.Blazor
                         continue;
                     }
 
-                    originals.TryAdd(component, value);
+                    AddOriginal(originals, component, property.Name, value);
 
                     try
                     {
-                        PropertyMap.Remove(component);
+                        if (PropertyMap.TryGetValue(component, out var existing))
+                        {
+                            if (!existing.Contains(property.Name)) existing.Add(property.Name);
+                        }
+                        else
+                        {
+                            PropertyMap.Add(component, new List<string> { property.Name });
+                        }
                     }
-                    catch
-                    {
-                    }
+                    catch { }
 
-                    PropertyMap.Add(component, property.Name);
                     property.SetValue(component, translated);
                 }
                 catch
@@ -73,36 +107,71 @@ namespace Mtf.LanguageService.MAUI.Blazor
             foreach (var kv in originalTexts)
             {
                 var target = kv.Key;
-                var originalValue = kv.Value;
+                var packed = kv.Value;
 
                 if (target == null)
                 {
                     continue;
                 }
 
-                if (PropertyMap.TryGetValue(target, out var propName))
+                // If PropertyMap lists specific properties, restore each from packed data if present.
+                if (PropertyMap.TryGetValue(target, out var props))
                 {
-                    TrySetProperty(target, propName, originalValue);
+                    var parsed = ParseOriginalEntries(packed).ToDictionary(p => p.Key, p => p.Value);
+                    foreach (var propName in props)
+                    {
+                        if (parsed.TryGetValue(propName, out var origVal))
+                        {
+                            if (propName == "Text" && target is BindableObject bindable)
+                            {
+                                ToolTipProperties.SetText(bindable, origVal);
+                            }
+                            else
+                            {
+                                TrySetProperty(target, propName, origVal);
+                            }
+                        }
+                        else
+                        {
+                            TrySetProperty(target, propName, packed);
+                        }
+                    }
                     continue;
                 }
 
+                var entries = ParseOriginalEntries(packed).ToList();
+                if (entries.Count > 0)
+                {
+                    foreach (var e in entries)
+                    {
+                        if (e.Key == "Text" && target is BindableObject bindable)
+                        {
+                            ToolTipProperties.SetText(bindable, e.Value);
+                        }
+                        else
+                        {
+                            TrySetProperty(target, e.Key, e.Value);
+                        }
+                    }
+                    continue;
+                }
+
+                // legacy: single original value -> try common properties
+                var originalValue = packed;
+                var restored = false;
                 foreach (var p in CommonProperties)
                 {
                     if (TrySetProperty(target, p, originalValue))
                     {
+                        restored = true;
                         break;
                     }
                 }
 
-                if (PropertyMap.TryGetValue(target, out var ttPropName)
-                    && ttPropName == "Text"
-                    && target is BindableObject bindable)
+                if (!restored)
                 {
-                    ToolTipProperties.SetText(bindable, originalValue);
-                    continue;
+                    TryRestoreSpecialCases(target, originalValue);
                 }
-
-                TryRestoreSpecialCases(target, originalValue);
             }
         }
 
@@ -226,10 +295,9 @@ namespace Mtf.LanguageService.MAUI.Blazor
                     return;
                 }
 
-                originals.TryAdd(bindable, text);
+                AddOriginal(originals, bindable, "Text", text);
 
-                PropertyMap.Remove(bindable);
-                PropertyMap.Add(bindable, "Text");
+                try { if (PropertyMap.TryGetValue(bindable, out var list)) { if (!list.Contains("Text")) list.Add("Text"); } else { PropertyMap.Add(bindable, new List<string>{ "Text" }); } } catch { }
 
                 ToolTipProperties.SetText(bindable, translated);
             }
@@ -267,7 +335,7 @@ namespace Mtf.LanguageService.MAUI.Blazor
                                 var t = Lng.Elem(span.Text);
                                 if (t != span.Text)
                                 {
-                                    originals.TryAdd(target, originalCombined);
+                                    AddOriginal(originals, target, propertyName, originalCombined);
                                     span.Text = t;
                                     translated = true;
                                 }
@@ -303,14 +371,20 @@ namespace Mtf.LanguageService.MAUI.Blazor
             var translated = Lng.Elem(originalText);
             if (translated != originalText)
             {
-                originals.TryAdd(target, originalText);
+                AddOriginal(originals, target, propertyName, originalText);
 
                 try
                 {
-                    PropertyMap.Remove(target);
+                    if (PropertyMap.TryGetValue(target, out var existing))
+                    {
+                        if (!existing.Contains(propertyName)) existing.Add(propertyName);
+                    }
+                    else
+                    {
+                        PropertyMap.Add(target, new List<string> { propertyName });
+                    }
                 }
                 catch { }
-                PropertyMap.Add(target, propertyName);
 
                 prop.SetValue(target, translated);
             }
@@ -331,11 +405,10 @@ namespace Mtf.LanguageService.MAUI.Blazor
                     {
                         if (!originals.ContainsKey(ti))
                         {
-                            originals.Add(ti, ti.Text);
+                            AddOriginal(originals, ti, "Text", ti.Text);
                         }
 
-                        PropertyMap.Remove(ti);
-                        PropertyMap.Add(ti, "Text");
+                        try { if (PropertyMap.TryGetValue(ti, out var list)) { if (!list.Contains("Text")) list.Add("Text"); } else { PropertyMap.Add(ti, new List<string>{ "Text" }); } } catch { }
                         ti.Text = Lng.Elem(ti.Text);
                     }
                 }

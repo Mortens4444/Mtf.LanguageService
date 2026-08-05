@@ -42,7 +42,6 @@
     <PackageTags>Lng Translator Language Windows Forms Mortens</PackageTags>
   </PropertyGroup>
   <ItemGroup>
-    <None Include=".\ReadMe.md" Pack="true" PackagePath="" />
     <None Include="..\LICENSE.txt" Pack="true" PackagePath="" />
     <None Include="..\Mtf.LanguageService\Languages.ods" Pack="true" PackagePath="buildTransitive\" CopyToOutputDirectory="Always" />
     <None Include="Mtf.Windows.Forms.LanguageService.targets" Pack="true" PackagePath="buildTransitive\" />

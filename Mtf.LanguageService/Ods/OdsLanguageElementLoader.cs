@@ -69,36 +69,12 @@ namespace Mtf.LanguageService.Ods
         {
             if (stream == null) throw new ArgumentNullException(nameof(stream));
 
-            // Try to call ReadFile(Stream) if OdsReader implements it
+            // Ensure stream position is at start if possible
+            try { if (stream.CanSeek) stream.Position = 0; } catch { /* ignore */ }
+
             var odsReader = new OdsReader();
-            var readerType = odsReader.GetType();
-            var method = readerType.GetMethod("ReadFile", new[] { typeof(Stream) });
-
-            if (method != null)
-            {
-                // Use the stream overload directly
-                var ds = method.Invoke(odsReader, new object[] { stream }) as DataSet ?? throw new InvalidOperationException("OdsReader.ReadFile(Stream) returned null.");
-                return ParseDataSet(ds);
-            }
-
-            // Fallback: write to temp file and call file-based API
-            var tempPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N") + ".ods");
-            try
-            {
-                // Ensure stream position is at start if possible
-                try { if (stream.CanSeek) stream.Position = 0; } catch { /* ignore */ }
-
-                using (var fs = File.Create(tempPath))
-                {
-                    stream.CopyTo(fs);
-                }
-
-                return LoadElements(tempPath);
-            }
-            finally
-            {
-                try { if (File.Exists(tempPath)) File.Delete(tempPath); } catch { /* ignore */ }
-            }
+            var ds = odsReader.ReadFile(stream) ?? throw new InvalidOperationException("OdsReader.ReadFile(Stream) returned null.");
+            return ParseDataSet(ds);
         }
 
         private static Dictionary<Translation, List<string>> ParseDataSet(DataSet dataSet)
