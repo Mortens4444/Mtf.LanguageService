@@ -12,7 +12,7 @@ namespace Mtf.LanguageService.Converters
     {
         public Language Convert(Nationality nationality)
         {
-            var nationalityEnum = nationality as Enum;
+            var nationalityEnum = (Enum)(object)nationality;
             var firstDefaultLanguageAttribute = nationalityEnum.GetSingleEnumAttribute<DefaultLanguagesAttribute>("Languages");
             if (firstDefaultLanguageAttribute is IEnumerable<Language> defaultLanguages)
             {
