@@ -8,6 +8,7 @@ namespace Mtf.LanguageService.MAUI
     {
         private static readonly ConditionalWeakTable<object, List<string>> PropertyMap = new();
         private static readonly string[] CommonProperties = new[] { "Text", "Title", "Header", "Placeholder", "Label", "Content", "Caption", "Description", "HeaderText", "LabelText", "ButtonText", "TitleText" };
+        private const string ToolTipPropertyTag = "__ToolTipText";
 
         private const char RecordSep = '\u001E';
         private const char UnitSep = '\u001F';
@@ -98,7 +99,7 @@ namespace Mtf.LanguageService.MAUI
                     {
                         if (parsed.TryGetValue(propName, out var origVal))
                         {
-                            if (propName == "Text" && target is BindableObject bindable)
+                            if (propName == ToolTipPropertyTag && target is BindableObject bindable)
                             {
                                 ToolTipProperties.SetText(bindable, origVal);
                             }
@@ -120,7 +121,7 @@ namespace Mtf.LanguageService.MAUI
                 {
                     foreach (var e in entries)
                     {
-                        if (e.Key == "Text" && target is BindableObject bindable)
+                        if (e.Key == ToolTipPropertyTag && target is BindableObject bindable)
                         {
                             ToolTipProperties.SetText(bindable, e.Value);
                         }
@@ -271,9 +272,13 @@ namespace Mtf.LanguageService.MAUI
                     return;
                 }
 
-                AddOriginal(originals, bindable, "Text", text);
+                // Recorded under a distinct tag (not "Text") so SetOriginalTexts can tell a tooltip
+                // restore apart from a regular Text-property restore for the same target - they used
+                // to share the "Text" tag, which made every ordinary Label/Button Text restore wrongly
+                // write to the (invisible) tooltip instead of the visible property.
+                AddOriginal(originals, bindable, ToolTipPropertyTag, text);
 
-                try { if (PropertyMap.TryGetValue(bindable, out var list)) { if (!list.Contains("Text")) list.Add("Text"); } else { PropertyMap.Add(bindable, new List<string>{ "Text" }); } } catch { }
+                try { if (PropertyMap.TryGetValue(bindable, out var list)) { if (!list.Contains(ToolTipPropertyTag)) list.Add(ToolTipPropertyTag); } else { PropertyMap.Add(bindable, new List<string>{ ToolTipPropertyTag }); } } catch { }
 
                 ToolTipProperties.SetText(bindable, translated);
             }
