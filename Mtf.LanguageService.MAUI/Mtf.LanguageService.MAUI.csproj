@@ -67,7 +67,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <Version>3.0.104</Version>
+    <Version>3.0.105</Version>
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <FileVersion>$(Version)</FileVersion>
     <InformationalVersion>$(Version)</InformationalVersion>
