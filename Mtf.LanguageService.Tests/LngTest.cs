@@ -31,6 +31,7 @@ namespace Mtf.LanguageService.Tests
 
             Lng.DefaultLanguage = Language.Hungarian;
             Assert.AreEqual("WMI Adattár", Lng.Elem("WMI Repository"));
+            Assert.AreEqual("Pszi pajzs építés", Lng.Elem("Build psi shield"));
 
             Lng.DefaultLanguage = Language.Chinese;
             Assert.AreEqual("WMI 存储库", Lng.Elem("WMI Repository"));
